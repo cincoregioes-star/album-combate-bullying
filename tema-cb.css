@@ -229,3 +229,25 @@ html.cb-no-app body #cbTileApp{display:none!important}
   html body:not(#cb) #albumPages .cb-pagina-texto{font-size:.82rem!important; padding:10px 12px!important}
   html body:not(#cb) #tela-album .painel{max-width:none!important; margin:10px 8px 0!important}
 }
+
+/* ===== Cabeçalho no celular: compacto e sem sobreposição ===== */
+html body:not(#cb) .cb-lbl-curto{display:none}
+@media (max-width:600px){
+  html body:not(#cb) .cb-lbl-longo{display:none}
+  html body:not(#cb) .cb-lbl-curto{display:inline}
+  html body:not(#cb) header.topo.cb-topo{grid-template-columns:minmax(0,1fr)!important; grid-template-areas:"brand" "status" "principal"!important; gap:8px!important; padding:8px 10px 10px!important}
+  html body:not(#cb) header.cb-topo .brand{min-width:0; gap:10px}
+  html body:not(#cb) header.cb-topo .brand h1{font-size:1.05rem!important; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  html body:not(#cb) header.cb-topo .cb-status{flex-direction:row!important; flex-wrap:nowrap!important; justify-content:flex-start!important; gap:6px!important; overflow-x:auto; scrollbar-width:none}
+  html body:not(#cb) header.cb-topo .cb-status::-webkit-scrollbar{display:none}
+  html body:not(#cb) header.cb-topo .cb-chip{font-size:.72rem!important; padding:3px 9px!important; flex:none}
+  html body:not(#cb) header.cb-topo .cb-principal{display:grid!important; grid-template-columns:repeat(5,minmax(0,1fr))!important; gap:5px!important}
+  html body:not(#cb) header.cb-topo .cb-principal button{min-width:0!important; width:100%!important; height:54px!important; min-height:54px!important; padding:4px 2px!important; font-size:.68rem!important; overflow:hidden!important}
+  html body:not(#cb) header.cb-topo .cb-principal button span{max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  html body:not(#cb) header.cb-topo .cb-ico{font-size:1.2rem!important}
+  html body:not(#cb) #tela-projeto .cb-hero h2{font-size:clamp(1.25rem,6.2vw,1.6rem)!important}
+  html body:not(#cb) #tela-projeto .cb-hero p{font-size:.95rem!important}
+  html body:not(#cb) #tela-projeto .cb-hero .logo-box{width:84px!important; height:84px!important}
+}
+html body:not(#cb) #tela-projeto .cb-hero > *{position:relative; z-index:1}
+html body:not(#cb) #tela-projeto .cb-hero::before{z-index:0}
