@@ -56,13 +56,13 @@
     const modal=document.getElementById('modal');
     const conteudo=document.getElementById('modalConteudo');
     if(!modal||!conteudo) return;
-    modal.classList.remove('dx-v22-pesquisa','dx-v22-videos');
     const h=conteudo.querySelector('h2');
     const titulo=texto(h);
     const pesquisa=!!conteudo.querySelector('.dx13-survey') || titulo.includes('pesquisa 1') || titulo.includes('pesquisa 2');
     const videos=!!conteudo.querySelector('.dx13-micro') || titulo.includes('vídeos e pílulas') || titulo.includes('pílula concluída');
-    if(pesquisa) modal.classList.add('dx-v22-pesquisa');
-    if(videos) modal.classList.add('dx-v22-videos');
+    // só altera a classe quando muda (alterar sempre criava um laço infinito com o observador)
+    if(modal.classList.contains('dx-v22-pesquisa')!==pesquisa) modal.classList.toggle('dx-v22-pesquisa',pesquisa);
+    if(modal.classList.contains('dx-v22-videos')!==videos) modal.classList.toggle('dx-v22-videos',videos);
     if(pesquisa||videos){
       modal.querySelectorAll('.fechar,.ficha-fechar-x,.dx20-modalbar').forEach(el=>el.remove());
       if(!conteudo.querySelector('.dx-v22-retornar')){
@@ -82,15 +82,17 @@
   function observarModal(){
     const modal=document.getElementById('modal');
     if(!modal) return;
-    const obs=new MutationObserver(()=>setTimeout(classificarModal,0));
-    obs.observe(modal,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
+    let agendado=false;
+    const obs=new MutationObserver(()=>{if(agendado)return;agendado=true;requestAnimationFrame(()=>{agendado=false;classificarModal()})});
+    obs.observe(modal,{subtree:true,childList:true});
     classificarModal();
   }
 
   function limparUI(){
     corrigirCreditos();
     removerAcessosProfessor();
-    const obs=new MutationObserver(()=>{removerAcessosProfessor();corrigirCreditos()});
+    let pendente=false;
+    const obs=new MutationObserver(()=>{if(pendente)return;pendente=true;setTimeout(()=>{pendente=false;removerAcessosProfessor();corrigirCreditos()},300)});
     obs.observe(document.body,{subtree:true,childList:true});
     bloquearRotasAdministrativas();
     observarModal();

@@ -251,3 +251,25 @@ html body:not(#cb) .cb-lbl-curto{display:none}
 }
 html body:not(#cb) #tela-projeto .cb-hero > *{position:relative; z-index:1}
 html body:not(#cb) #tela-projeto .cb-hero::before{z-index:0}
+
+/* ===== Desempenho: fundo em camada fixa própria e sem desfoque nos cartões ===== */
+html body:not(#cb){background:var(--n-bg)!important}
+html body:not(#cb)::before{
+  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background:
+    radial-gradient(1100px 600px at 85% -10%,rgba(139,92,246,.28),transparent 60%),
+    radial-gradient(900px 520px at -10% 10%,rgba(99,102,241,.25),transparent 60%),
+    radial-gradient(800px 500px at 100% 110%,rgba(249,115,22,.16),transparent 60%),
+    linear-gradient(180deg,var(--n-bg) 0%,var(--n-bg2) 100%);
+}
+html body:not(#cb) #tela-projeto .cb-hero,
+html body:not(#cb) .cb-atalhos button,
+html body:not(#cb) #tela-album .painel,
+html body:not(#cb) #albumPages .pagina.cb-pagina,
+html body:not(#cb) #tela-simulados .quiz-card,
+html body:not(#cb) #tela-simulados .pergunta-box{
+  backdrop-filter:none!important; -webkit-backdrop-filter:none!important;
+  background:linear-gradient(180deg,#18214a 0%,#131b3a 100%)!important;
+}
+html body:not(#cb) #modal{backdrop-filter:none!important; -webkit-backdrop-filter:none!important; background:rgba(5,8,20,.82)!important}
+html body:not(#cb) header.topo.cb-topo{backdrop-filter:none!important; -webkit-backdrop-filter:none!important; background:rgba(10,15,31,.96)!important}

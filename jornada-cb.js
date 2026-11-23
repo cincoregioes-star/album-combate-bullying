@@ -299,8 +299,9 @@
   }
 
   function atualizarUI(){
-    const c=document.getElementById('dx13Cycle');if(c)c.textContent=cicloAtual?`${cicloAtual.nome} • Pesquisa 2: ${cicloAtual.pesquisa_final_liberada?'liberada':'bloqueada'}`:'Ciclo não carregado';
-    const b=document.getElementById('dx13Pesquisa2');if(b)b.textContent=`Pesquisa 2${pesquisa2Liberada()?' ✅':' 🔒'}`;
+    const set=(el,t)=>{if(el&&el.textContent!==t)el.textContent=t};
+    set(document.getElementById('dx13Cycle'),cicloAtual?`${cicloAtual.nome} • Pesquisa 2: ${cicloAtual.pesquisa_final_liberada?'liberada':'bloqueada'}`:'Ciclo não carregado');
+    set(document.getElementById('dx13Pesquisa2'),`Pesquisa 2${pesquisa2Liberada()?' ✅':' 🔒'}`);
   }
 
   function instalarEstilos(){
