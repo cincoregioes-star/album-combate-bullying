@@ -649,3 +649,16 @@ main,
     padding:10px 16px!important;
   }
 }
+
+/* ===== Revelação da figurinha ao vencer a fase ===== */
+.premio-album-box.revelacao{background:linear-gradient(180deg,#fff7d6,#ffffff)}
+.premio-album-box .revelacao-carta{width:min(230px,62vw);aspect-ratio:768/1376;margin:10px auto;perspective:900px}
+.premio-album-box .revelacao-carta img{width:100%!important;height:100%!important;max-height:none!important;object-fit:cover!important;border-radius:14px;background:transparent!important;
+  animation:revelarCarta .9s cubic-bezier(.2,.8,.2,1.2) both;box-shadow:0 0 0 3px #facc15,0 18px 40px rgba(250,204,21,.45)}
+@keyframes revelarCarta{0%{transform:rotateY(90deg) scale(.6);opacity:0}60%{transform:rotateY(-12deg) scale(1.04);opacity:1}100%{transform:rotateY(0) scale(1)}}
+.premio-album-box button.secundario{background:#e5e7eb}
+.sticker-preview.figurinha-revelada{box-shadow:0 0 0 3px #facc15,0 0 30px rgba(250,204,21,.6);transition:box-shadow .4s}
+.sticker-preview img{object-fit:cover}
+/* a capa "FIGURINHA" só aparece se a imagem não carregar */
+.sticker-preview:not(.sem-imagem) .sticker-fallback{display:none!important}
+.sticker-preview{aspect-ratio:768/1376!important}

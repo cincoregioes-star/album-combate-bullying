@@ -217,7 +217,8 @@ let moves = 0;
 let cactusBroken = 0;
 let cactusTarget = 0;
 let phaseFinished = false;
-let audioOn = false;
+let audioOn = true;      // efeitos sonoros (acerto, vitória...) sempre ligados
+let musicaOn = false;   // música de fundo, controlada pelo botão
 let boosters = { bomb: 3, rocket: 3, shovel: 3 };
 let activeBooster = null;
 let selectedIndex = null;
@@ -271,14 +272,14 @@ function markInteraction() {
 }
 
 function toggleAudio() {
-  audioOn = !audioOn;
-  if (audioOn) {
+  musicaOn = !musicaOn;
+  if (musicaOn) {
     audioFundo.volume = 0.22;
     audioFundo.play().catch(() => {});
-    btnAudio.textContent = "Desativar áudio";
+    btnAudio.textContent = "Desligar música";
   } else {
     audioFundo.pause();
-    btnAudio.textContent = "Ativar áudio";
+    btnAudio.textContent = "Ligar música";
   }
 }
 
@@ -316,7 +317,7 @@ function startPhase() {
   cactusBroken = 0;
   cactusTarget = phase.cactusCount;
   currentRevealGoal = phase.revealCover;
-  currentStickerNumber = (phaseIndex % STICKER_FILES.length) + 1;
+  currentStickerNumber = escolherFigurinhaDaFase();
 
   faseAtualEl.textContent = phaseIndex + 1;
   tituloFaseEl.textContent = phase.title;
@@ -423,15 +424,22 @@ function initStickerReveal(coveredCount) {
   renderStickerMask();
 }
 
+function tituloFigurinha(n) {
+  const lista = (typeof FIGURINHAS !== "undefined" && Array.isArray(FIGURINHAS)) ? FIGURINHAS : [];
+  const f = lista.find(x => Number(x.numero) === Number(n));
+  return f ? f.titulo : "";
+}
+function caminhoFigurinhaAlbum(n) { return `../figurinhas/${String(n).padStart(2, "0")}.webp`; }
+
 function loadStickerImage() {
-  const fileName = STICKER_FILES[currentStickerNumber - 1] || `${String(currentStickerNumber).padStart(3, "0")}.webp`;
-  const stickerNumText = String(currentStickerNumber).padStart(3, "0");
-  figurinhaNumeroEl.textContent = stickerNumText;
-  fallbackNumeroEl.textContent = stickerNumText;
-  figurinhaArquivoEl.textContent = `Figurinha ${String(currentStickerNumber).padStart(2, "0")} do álbum`;
-  stickerImageEl.src = `figurinhas/${fileName}`;
+  const n2 = String(currentStickerNumber).padStart(2, "0");
+  figurinhaNumeroEl.textContent = n2;
+  fallbackNumeroEl.textContent = n2;
+  figurinhaArquivoEl.textContent = `Figurinha ${n2} do álbum`;
   stickerImageEl.onload = () => stickerPreviewEl.classList.remove("sem-imagem");
   stickerImageEl.onerror = () => stickerPreviewEl.classList.add("sem-imagem");
+  stickerImageEl.src = caminhoFigurinhaAlbum(currentStickerNumber);
+  if (stickerImageEl.complete && stickerImageEl.naturalWidth > 0) stickerPreviewEl.classList.remove("sem-imagem");
 }
 
 function renderStickerMask() {
@@ -822,7 +830,7 @@ function resolveGroups(groups, anchorIndex = null) {
       revealStickerBlocks(finalRevealQty);
       play(audioSparkle, 0.5);
     }
-    play(audioMatch, 0.65);
+    play(audioMatch, 0.45);
 
     collapseBoard();
     fillEmptyCells();
@@ -1113,17 +1121,20 @@ function checkWin() {
     btnProximaFase.disabled = phaseIndex >= PHASES.length - 1;
     markInteraction();
     play(audioVitoria, 0.9);
+    revelarFigurinhaInteira();
+    const ganhou = enviarFigurinhaParaAlbum(currentStickerNumber, `Game — fase ${phaseIndex + 1}`);
+    setTimeout(() => mostrarFigurinhaRevelada(currentStickerNumber, ganhou, phaseIndex >= PHASES.length - 1), 450);
 
     if (phaseIndex >= PHASES.length - 1) {
       openModal(
         "Missão concluída!",
-        "Você concluiu todas as fases e o sistema está pronto para receber todas as figurinhas depois.",
+        `Você concluiu todas as fases e revelou a figurinha ${String(currentStickerNumber).padStart(2, "0")}. Ela já está no seu álbum.`,
         { primaryText: "Reiniciar jogo", primaryAction: () => { closeModal(); resetGame(); } }
       );
     } else {
       openModal(
         "Fase vencida!",
-        "Você concluiu a fase e pode avançar para o próximo layout.",
+        `Você revelou a figurinha ${String(currentStickerNumber).padStart(2, "0")}. Ela já foi enviada para o seu álbum.`,
         { primaryText: "Próxima fase", primaryAction: () => { closeModal(); nextPhase(); } }
       );
     }
@@ -1151,7 +1162,6 @@ function restartCurrentPhase() {
 }
 
 function openModal(title, text, options = {}) {
-  if(/fim|vencida|conclu/i.test(String(title)+' '+String(text))) liberarPremioMunicipal(title);
   modalTitulo.textContent = title;
   modalTexto.textContent = text;
   btnModalPrincipal.textContent = options.primaryText || "Continuar";
@@ -1316,22 +1326,58 @@ function mostrarPacoteGameMunicipal(){
   `;
 }
 
-/* Tenta conectar com modais de fim/fase do game enviado */
-(function(){
-  const antigoOpenModal = window.openModal;
-  if(typeof antigoOpenModal === "function"){
-    window.openModal = function(title, text, options){
-      if(/fim|fase|venc|conclu|parab/i.test(String(title)+" "+String(text))){
-        liberarPacoteGameMunicipal(title || "fase concluída");
-      }
-      return antigoOpenModal.apply(this, arguments);
-    }
+
+
+
+/* ===== Figurinha revelada ao vencer a fase ===== */
+function escolherFigurinhaDaFase() {
+  const e = carregarAlbumMunicipal();
+  const faltando = [];
+  for (let n = 1; n <= 36; n++) {
+    const r = regAlbumMunicipal(e, n);
+    if (!r.colada && Number(r.quantidade || 0) === 0) faltando.push(n);
   }
-  const antigoAlert = window.alert;
-  window.alert = function(msg){
-    if(/fim|fase|venc|conclu|parab/i.test(String(msg))){
-      liberarPacoteGameMunicipal(String(msg));
-    }
-    return antigoAlert.apply(this, arguments);
+  if (faltando.length) return faltando[Math.floor(Math.random() * faltando.length)];
+  return Math.floor(Math.random() * 36) + 1;
+}
+function revelarFigurinhaInteira() {
+  for (let i = 0; i < stickerMaskState.length; i++) stickerMaskState[i] = false;
+  renderStickerMask();
+  stickerPreviewEl.classList.add("figurinha-revelada");
+  if (typeof updateUI === "function") updateUI();
+}
+function enviarFigurinhaParaAlbum(n, motivo) {
+  const e = carregarAlbumMunicipal();
+  const r = regAlbumMunicipal(e, n);
+  const repetida = Number(r.quantidade || 0) > 0 || r.colada;
+  if (repetida) e.repetidas = Number(e.repetidas || 0) + 1;
+  r.quantidade = Number(r.quantidade || 0) + 1;
+  if (!Array.isArray(e.historico)) e.historico = [];
+  e.historico.push({ tipo: "game", motivo, numero: n, data: new Date().toISOString() });
+  salvarAlbumMunicipal(e);
+  return { numero: n, repetida };
+}
+function mostrarFigurinhaRevelada(n, info, ultimaFase) {
+  const n2 = String(n).padStart(2, "0");
+  const titulo = tituloFigurinha(n);
+  let box = document.getElementById("premioAlbumMunicipal");
+  if (!box) {
+    box = document.createElement("div");
+    box.id = "premioAlbumMunicipal";
+    box.className = "premio-album-municipal";
+    document.body.appendChild(box);
   }
-})();
+  const fechar = "document.getElementById('premioAlbumMunicipal').remove()";
+  const botaoContinuar = ultimaFase
+    ? `<button onclick="${fechar}">Ver painel de direitos</button>`
+    : `<button onclick="${fechar}; closeModal(); nextPhase();">Próxima fase</button>`;
+  box.innerHTML = `
+    <div class="premio-album-box revelacao">
+      <h2>Figurinha revelada!</h2>
+      <div class="revelacao-carta"><img src="${caminhoFigurinhaAlbum(n)}" alt="Figurinha ${n2}"></div>
+      <p><b>${n2}${titulo ? " — " + titulo : ""}</b></p>
+      <p>${info && info.repetida ? "Você já tinha esta figurinha: ela entrou como <b>repetida</b>." : "Ela já foi enviada para o seu álbum. Volte e clique em <b>Colar figurinha</b>."}</p>
+      ${botaoContinuar}
+      <button class="secundario" onclick="window.location.href='../index.html'">Voltar ao álbum</button>
+    </div>`;
+}

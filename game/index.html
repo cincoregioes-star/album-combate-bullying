@@ -11,7 +11,7 @@
   <audio id="audioFundo" src="audio/fundo.mp3" loop></audio>
   <audio id="audioClick" src="audio/click.mp3"></audio>
   <audio id="audioSwipe" src="audio/swipe.mp3"></audio>
-  <audio id="audioMatch" src="audio/match.mp3"></audio>
+  <audio id="audioMatch" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c1539c.mp3?filename=success-1-6297.mp3" preload="auto" onerror="if(!this.dataset.local){this.dataset.local=1;this.src='audio/match.mp3'}"></audio>
   <audio id="audioSparkle" src="audio/sparkle.mp3"></audio>
   <audio id="audioBomba" src="audio/bomba.mp3"></audio>
   <audio id="audioFoguete" src="audio/foguete.mp3"></audio>
@@ -28,7 +28,7 @@
         <p>Combine peças, cumpra os objetivos e revele uma figurinha do álbum a cada fase.</p>
       </div>
       <div class="topbar-actions">
-        <button id="btnAudio" class="btn btn-dark">Ativar áudio</button>
+        <button id="btnAudio" class="btn btn-dark">Ligar música</button>
         <button id="btnReiniciar" class="btn btn-dark">Reiniciar jogo</button>
       </div>
     </header>
@@ -83,7 +83,7 @@
         <div class="figurinha-box">
           <div class="figurinha-head">
             <h2>Figurinha sendo desvendada</h2>
-            <span id="figurinhaArquivo" class="etiqueta-arquivo">001.webp</span>
+            <span id="figurinhaArquivo" class="etiqueta-arquivo">Figurinha do álbum</span>
           </div>
           <div id="stickerPreview" class="sticker-preview sem-imagem">
             <img id="stickerImage" alt="Figurinha" />
@@ -142,6 +142,7 @@
     </div>
   </div>
 
+  <script src="../album-data.js"></script>
   <script src="figurinhas/figurinhas-config.js"></script>
   <script src="script.js"></script>
   <script src="game-v13.js"></script>
