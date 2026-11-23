@@ -1,0 +1,14 @@
+{
+  "name":"Combate ao Bullying e ao Cyberbullying",
+  "short_name":"Combate ao Bullying",
+  "description":"Álbum digital pedagógico sobre bullying, cyberbullying, empatia, cidadania digital e cultura de paz.",
+  "start_url":"./index.html",
+  "scope":"./",
+  "display":"standalone",
+  "background_color":"#07111f",
+  "theme_color":"#1e3a8a",
+  "icons":[
+    {"src":"logo-escola.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"logo-escola.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
+}
