@@ -36,9 +36,8 @@ window.SUPABASE_CONFIG = {
   async function flush(){if(flushing||!navigator.onLine)return;flushing=true;try{let q=fila();while(q.length){try{await post(q[0].table,q[0].payload);q.shift();setFila(q)}catch(e){break}}}finally{flushing=false}}
 
   function abrirIdentificacao(){
-    const p=perfil();
     if(typeof modal!=='function')return;
-    modal(`<div class="ficha-detalhada"><button class="ficha-fechar-x" onclick="fecharModal()">×</button><h2>Identificação do aluno</h2><p>Preencha uma vez. Esses dados servem ao acompanhamento pedagógico; as pesquisas sensíveis são registradas separadamente sem o nome.</p><div class="form-final"><input id="dxNome" placeholder="Nome do aluno" value="${String(p.nome||'').replace(/"/g,'&quot;')}"><input id="dxEscola" placeholder="Escola" value="${String(p.escola_bairro||'').replace(/"/g,'&quot;')}"><input id="dxTurma" placeholder="Turma / série" value="${String(p.turma||'').replace(/"/g,'&quot;')}"></div><button class="btn" onclick="window.dxSalvarIdentificacao()">Salvar identificação</button></div>`);
+    modal(`<div class="ficha-detalhada"><button class="ficha-fechar-x" onclick="fecharModal()">×</button><h2>Identificação do aluno 🔒</h2><p>Esta área será habilitada após a definição do projeto.</p><p>Enquanto isso, você pode usar normalmente o álbum, os simulados, o game, os vídeos e as missões. Seu progresso fica salvo neste aparelho.</p><div class="ficha-acoes"><button class="ficha-fechar-btn" onclick="fecharModal()">Entendi</button></div></div>`);
   }
   window.dxSalvarIdentificacao=function(){const nome=document.getElementById('dxNome')?.value.trim()||'';if(nome.length<2)return alert('Digite o nome do aluno.');salvarPerfil({nome,escola_bairro:document.getElementById('dxEscola')?.value||'',turma:document.getElementById('dxTurma')?.value||''});if(typeof fecharModal==='function')fecharModal()};
 
@@ -58,7 +57,7 @@ window.SUPABASE_CONFIG = {
   function instalarBase(){
     deviceId();
     const nav=document.querySelector('.topo nav');
-    if(nav&&!document.getElementById('dxBtnPerfil')){const b=document.createElement('button');b.id='dxBtnPerfil';b.textContent='Identificar aluno';b.onclick=abrirIdentificacao;nav.appendChild(b)}
+    if(nav&&!document.getElementById('dxBtnPerfil')){const b=document.createElement('button');b.id='dxBtnPerfil';b.textContent='Identificar aluno 🔒';b.onclick=abrirIdentificacao;nav.appendChild(b)}
     substituirConclusao();flush();
   }
 
