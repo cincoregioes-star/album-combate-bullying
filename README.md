@@ -30,8 +30,8 @@ cincoregioes@gmail.com
 Todo o conteúdo pedagógico (figurinhas, páginas, simulados, desafio, missão, pesquisas, pílulas e fases do game) está em **`album-data.js`**.
 
 ## Figurinhas
-As 36 imagens da pasta `figurinhas/` são **provisórias**. Os prompts ultrarrealistas para gerar cada uma estão em **`docs/PROMPTS_FIGURINHAS.md`**.
-Gere cada imagem na **vertical (retrato 2:3), em 1024×1536 px**, e salve com o mesmo nome (`01.webp` … `36.webp`). Não é preciso mudar nenhum código.
+As 36 figurinhas da pasta `figurinhas/` são as artes finais, no formato vertical 9:16 (768×1376 px).
+Os prompts usados para gerá-las estão em **`docs/PROMPTS_FIGURINHAS.md`**. Para trocar uma imagem, salve a nova com o mesmo nome (`01.webp` … `36.webp`). Não é preciso mudar nenhum código.
 
 ## Supabase (dados dos alunos e painel)
 O álbum usa o **mesmo projeto Supabase** do Dupla Exclusão, mas com **tabelas e funções próprias (prefixo `cb_`)**. Os dados não se misturam e um ciclo novo aqui não reinicia o outro álbum.
