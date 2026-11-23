@@ -1377,7 +1377,13 @@ function mostrarFigurinhaRevelada(n, info, ultimaFase) {
       <div class="revelacao-carta"><img src="${caminhoFigurinhaAlbum(n)}" alt="Figurinha ${n2}"></div>
       <p><b>${n2}${titulo ? " — " + titulo : ""}</b></p>
       <p>${info && info.repetida ? "Você já tinha esta figurinha: ela entrou como <b>repetida</b>." : "Ela já foi enviada para o seu álbum. Volte e clique em <b>Colar figurinha</b>."}</p>
-      ${botaoContinuar}
-      <button class="secundario" onclick="window.location.href='../index.html'">Voltar ao álbum</button>
+      <div class="revelacao-botoes">
+        ${botaoContinuar}
+        <button class="secundario" onclick="window.location.href='../index.html'">Voltar ao álbum</button>
+      </div>
     </div>`;
 }
+
+document.addEventListener("keydown", ev => {
+  if (ev.key === "Escape" && document.getElementById("premioAlbumMunicipal")) document.getElementById("premioAlbumMunicipal").remove();
+});

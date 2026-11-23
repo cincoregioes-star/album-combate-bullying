@@ -662,3 +662,10 @@ main,
 /* a capa "FIGURINHA" só aparece se a imagem não carregar */
 .sticker-preview:not(.sem-imagem) .sticker-fallback{display:none!important}
 .sticker-preview{aspect-ratio:768/1376!important}
+/* revelação cabe em qualquer altura de tela (notebook, celular deitado) */
+.premio-album-municipal{overflow-y:auto!important; align-items:center!important; padding:12px!important}
+.premio-album-box.revelacao{max-height:calc(100vh - 24px); max-height:calc(100dvh - 24px); overflow-y:auto; display:flex; flex-direction:column; align-items:center; padding:14px 18px!important}
+.premio-album-box.revelacao h2{margin:0 0 4px!important; font-size:1.35rem}
+.premio-album-box.revelacao p{margin:4px 0!important}
+.premio-album-box .revelacao-carta{width:auto!important; height:min(46vh,46dvh,410px)!important; aspect-ratio:768/1376; margin:6px auto!important; flex:none}
+.premio-album-box.revelacao .revelacao-botoes{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:6px}
