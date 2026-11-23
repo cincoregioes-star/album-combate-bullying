@@ -33,15 +33,19 @@ Todo o conteúdo pedagógico (figurinhas, páginas, simulados, desafio, missão,
 As 36 figurinhas da pasta `figurinhas/` são as artes finais, no formato vertical 9:16 (768×1376 px).
 Os prompts usados para gerá-las estão em **`docs/PROMPTS_FIGURINHAS.md`**. Para trocar uma imagem, salve a nova com o mesmo nome (`01.webp` … `36.webp`). Não é preciso mudar nenhum código.
 
-## Supabase (dados dos alunos e painel)
-O álbum usa o **mesmo projeto Supabase** do Dupla Exclusão, mas com **tabelas e funções próprias (prefixo `cb_`)**. Os dados não se misturam e um ciclo novo aqui não reinicia o outro álbum.
+## Modo livre (padrão) e Supabase
+O álbum vem em **modo livre**: tudo funciona sem servidor (álbum, pacotes, simulados, desafio, missões, game, vídeos e as duas pesquisas) e o progresso de cada aluno fica salvo no próprio aparelho/navegador.
 
-1. No Supabase, abra **SQL Editor → New query**.
-2. Cole o arquivo `supabase/COMBATE_BULLYING_SUPABASE.sql` e clique em **Run**.
-3. Crie o login de cada professor com o comando que está no fim do arquivo:
-   `select public.cb_criar_professor('usuario', 'Nome do Professor', 'senha', 'admin');`
+- **Pesquisa 1** (diagnóstico inicial) pode ser respondida a qualquer momento.
+- **Pesquisa 2** (avaliação final) é liberada automaticamente quando o aluno **completa o álbum** (36 figurinhas coladas). Ao enviá-la, o aluno vê o seu "antes e depois".
+- **Identificação do aluno** fica bloqueada com o aviso de que será habilitada após a definição do projeto.
 
-Enquanto o SQL não for executado, o álbum funciona normalmente no aparelho e guarda os registros numa fila para enviar depois. As pesquisas, porém, só abrem depois que o ciclo existir no Supabase.
+### Para ter o painel dos professores (opcional)
+1. Crie um projeto no Supabase e rode `supabase/COMBATE_BULLYING_SUPABASE.sql` no SQL Editor.
+2. Crie o login de cada professor com o comando que está no fim do arquivo.
+3. Em `supabase-config.js`, preencha `url` e a chave pública (`publishableKey` e `anonKey`) e mude `enabled` para `true`. Em `game/game-v13.js`, preencha a mesma `url` e `key`.
+
+Com o Supabase ligado, o professor também pode liberar a Pesquisa 2 para a turma inteira pelo painel.
 
 ## Publicar no GitHub Pages
 Em **Settings → Pages**, escolha *Deploy from a branch*, depois a branch `main` e a pasta `/ (root)`.

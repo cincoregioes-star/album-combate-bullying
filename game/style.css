@@ -669,3 +669,10 @@ main,
 .premio-album-box.revelacao p{margin:4px 0!important}
 .premio-album-box .revelacao-carta{width:auto!important; height:min(46vh,46dvh,410px)!important; aspect-ratio:768/1376; margin:6px auto!important; flex:none}
 .premio-album-box.revelacao .revelacao-botoes{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:6px}
+
+/* ===== Identidade "Horizonte" do álbum Combate ao Bullying ===== */
+body:not(#cb) .topbar{background:#fff!important; color:#10264a!important; border:1px solid #d6e2f3!important; box-shadow:0 10px 30px rgba(16,38,74,.15)!important; border-radius:22px!important}
+body:not(#cb) .topbar h1{color:#1d4ed8!important; text-shadow:none!important; font-family:"Nunito","Trebuchet MS",system-ui,sans-serif!important}
+body:not(#cb) .topbar p{color:#47607f!important}
+body:not(#cb) .topbar .btn{background:#2563eb!important; color:#fff!important; border:0!important}
+body:not(#cb) #dxGameBack{background:#fff!important; color:#1d4ed8!important; border:1px solid #d6e2f3!important; box-shadow:0 4px 12px rgba(0,0,0,.12)!important}

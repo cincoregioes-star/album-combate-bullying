@@ -25,6 +25,17 @@
 
 </main>
 <script src="supabase-config.js"></script>
-<script src="professor-v24.js"></script>
+<script>
+if(window.SUPABASE_CONFIG&&window.SUPABASE_CONFIG.enabled){
+  document.write('<script src="professor-v24.js"><\/script>');
+}else{
+  const alvo=document.querySelector('main')||document.body;
+  alvo.innerHTML=`<section class="prof-card" style="max-width:640px;margin:40px auto;text-align:center">
+    <h2>Painel dos professores</h2>
+    <p>O álbum está em <b>modo livre</b>: funciona por completo e salva o progresso de cada aluno no próprio aparelho.</p>
+    <p>O painel com os resultados da turma (pesquisas, simulados e concluintes) é habilitado quando o álbum for conectado a um banco de dados Supabase. As instruções estão no arquivo README.</p>
+    <p><a href="index.html">Voltar ao álbum</a></p></section>`;
+}
+</script>
 </body>
 </html>

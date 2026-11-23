@@ -5,17 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Álbum Combate ao Bullying e ao Cyberbullying</title>
   <meta name="description" content="Álbum digital pedagógico sobre bullying, cyberbullying, empatia e cultura de paz na escola.">
-  <meta name="theme-color" content="#1e3a8a">
+  <meta name="theme-color" content="#2563eb">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="layout-cb.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="tema-cb.css">
 </head>
 <body>
 <div class="app">
   <header class="topo cb-topo">
     <div class="brand" role="button" tabindex="0" title="Início" onclick="abrirTela('projeto')">
-      <span class="selo">Edição Premium</span>
-      <h1>Combate ao Bullying</h1>
-      <p>Respeito não se compartilha pela metade</p>
+      <img class="cb-brand-logo" src="logo-escola.png" alt="">
+      <span class="cb-brand-txt">
+        <span class="selo">Álbum digital</span>
+        <h1>Combate ao Bullying</h1>
+        <p>Respeito não se compartilha pela metade</p>
+      </span>
     </div>
     <div class="cb-status" aria-label="Seu progresso">
       <span class="cb-chip"><b id="navStatusColadas">0</b>/36 coladas</span>
@@ -77,9 +83,9 @@
 
     <section id="tela-album" class="tela">
       <div class="painel">
-        <button onclick="paginaAnterior()">← Página</button>
+        <button class="cb-seta" aria-label="Página anterior" onclick="paginaAnterior()">‹</button>
         <div><b id="tituloPagina">Página</b><span id="textoPagina"></span></div>
-        <button onclick="proximaPagina()">Página →</button>
+        <button class="cb-seta" aria-label="Próxima página" onclick="proximaPagina()">›</button>
       </div>
       <div id="albumPages" class="album-pages"></div>
     </section>

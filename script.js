@@ -185,15 +185,23 @@ function renderAlbum(){
   localStorage.setItem("cb_pagina_36", paginaAtual);
   const {p, figs, total} = dadosPaginaAtual();
 
-  document.getElementById("tituloPagina").textContent = `Página ${paginaAtual} de ${total} — ${p.titulo}`;
+  document.getElementById("tituloPagina").textContent = `Página ${paginaAtual} de ${total}`;
 
   const textoBarra = document.getElementById("textoPagina");
   if(textoBarra) textoBarra.textContent = "";
 
-  const html = `<article class="pagina pagina-tres">
-<h2>${p.titulo}</h2>
-    <div class="texto-pagina texto-duas-linhas">${p.texto}</div>
+  const secao = Number(p.pagina || 1);
+  const coladasPag = figs.filter(f=>reg(f.numero).colada).length;
+  const pontos = Array.from({length: total}, (_,i)=>`<button class="cb-ponto ${i+1===paginaAtual?'ativo':''}" aria-label="Página ${i+1}" onclick="paginaAtual=${i+1};renderAlbum()"></button>`).join("");
+  const html = `<article class="pagina pagina-tres cb-pagina cb-secao-${secao}">
+    <header class="cb-pagina-topo">
+      <span class="cb-pagina-num">${String(paginaAtual).padStart(2,"0")}</span>
+      <div class="cb-pagina-tit"><small>Tema ${secao} de ${PAGINAS.length}</small><h2>${p.titulo}</h2></div>
+      <span class="cb-pagina-cont">${coladasPag}/${figs.length} coladas</span>
+    </header>
+    <div class="texto-pagina cb-pagina-texto">${p.texto}</div>
     <div class="cb-grid">${figs.map(cardFig).join("")}</div>
+    <nav class="cb-pontos" aria-label="Páginas do álbum">${pontos}</nav>
   </article>`;
 
   document.getElementById("albumPages").innerHTML = html;

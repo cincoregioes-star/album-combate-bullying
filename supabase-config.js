@@ -1,13 +1,16 @@
 // ============================================================
 // COMBATE AO BULLYING — SUPABASE / BOOTSTRAP
-// Usa o mesmo projeto Supabase do Dupla Exclusão, com tabelas e funções próprias (prefixo cb_).
+// Tabelas e funções próprias (prefixo cb_).
 // Para criar a estrutura, rode supabase/COMBATE_BULLYING_SUPABASE.sql no SQL Editor.
 // ============================================================
 window.SUPABASE_CONFIG = {
-  enabled: true,
-  url: "https://byajgsbilwiojdowqnlp.supabase.co",
-  publishableKey: "sb_publishable_MxqtFZap1Oxbo3L-vYicaA_Fj899LEO",
-  anonKey: "sb_publishable_MxqtFZap1Oxbo3L-vYicaA_Fj899LEO",
+  // MODO LIVRE: enabled=false. O álbum funciona por completo e salva tudo no próprio aparelho.
+  // Para ter o painel dos professores, crie um projeto no Supabase, rode
+  // supabase/COMBATE_BULLYING_SUPABASE.sql, preencha url/chave abaixo e mude enabled para true.
+  enabled: false,
+  url: "",
+  publishableKey: "",
+  anonKey: "",
   table: "cb_concluintes",
   premiosDisponiveis: 10,
   totalFigurinhas: 36,
@@ -67,7 +70,7 @@ window.SUPABASE_CONFIG = {
   window.addEventListener('online',flush);
   window.addEventListener('load',function(){
     const path=location.pathname.toLowerCase();
-    if(path.endsWith('/professor.html')||path.endsWith('professor.html')){
+    if(CFG.enabled&&(path.endsWith('/professor.html')||path.endsWith('professor.html'))){
       carregarScript('professor-ui-v23.js','dxProfessorUiV23');
       return;
     }

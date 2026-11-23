@@ -1,5 +1,5 @@
 (function(){
-  const CFG={url:'https://byajgsbilwiojdowqnlp.supabase.co',key:'sb_publishable_MxqtFZap1Oxbo3L-vYicaA_Fj899LEO'};
+  const CFG={url:'',key:''}; // preencha com o mesmo Supabase do supabase-config.js para registrar as fases no painel
   const objetivos=[
     {titulo:'Fase 1 — Reconhecer o bullying',texto:'Objetivo pedagógico: diferenciar brincadeira, conflito e bullying, percebendo a repetição, a intenção e o desequilíbrio de poder.'},
     {titulo:'Fase 2 — Desarmar o cyberbullying',texto:'Objetivo pedagógico: identificar ataques em grupos, perfis falsos e exposição de imagens, e praticar o “pense antes de postar”.'},
@@ -9,7 +9,7 @@
   ];
   function ciclo(){try{return JSON.parse(localStorage.getItem('cb_ciclo_v1')||'null')}catch(e){return null}}
   function device(){let id=localStorage.getItem('cb_device_id_v1');if(!id){id=crypto?.randomUUID?crypto.randomUUID():'00000000-0000-4000-8000-'+String(Date.now()).padStart(12,'0').slice(-12);localStorage.setItem('cb_device_id_v1',id)}return id}
-  async function registrar(nome,resultado,recompensa){const c=ciclo();if(!c)return;try{await fetch(`${CFG.url}/rest/v1/cb_atividades_resultados`,{method:'POST',headers:{apikey:CFG.key,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({ciclo_id:c.id,device_id:device(),atividade:nome,categoria:'game',resultado,pontos:100,recompensa})})}catch(e){}}
+  async function registrar(nome,resultado,recompensa){const c=ciclo();if(!c||!CFG.url||c.local)return;try{await fetch(`${CFG.url}/rest/v1/cb_atividades_resultados`,{method:'POST',headers:{apikey:CFG.key,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({ciclo_id:c.id,device_id:device(),atividade:nome,categoria:'game',resultado,pontos:100,recompensa})})}catch(e){}}
   function cardDireitos(){
     let box=document.getElementById('dxGameDireitos');if(box)return;
     box=document.createElement('div');box.id='dxGameDireitos';box.style.cssText='position:fixed;inset:0;background:rgba(3,10,20,.92);z-index:100000;display:flex;align-items:center;justify-content:center;padding:18px';

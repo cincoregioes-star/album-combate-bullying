@@ -47,7 +47,11 @@
   }
 
   async function buscarCiclo(){
-    if(!CFG.enabled || !CFG.url) return null;
+    if(!CFG.enabled || !CFG.url){
+      // Modo livre: sem servidor. Tudo funciona e fica salvo neste aparelho.
+      cicloAtual={id:'local',nome:'Uso livre neste aparelho',ativo:true,pesquisa_final_liberada:false,local:true};
+      return cicloAtual;
+    }
     try{
       const r=await fetch(`${CFG.url}/rest/v1/cb_ciclos?select=id,nome,ativo,pesquisa_final_liberada,versao,created_at&ativo=eq.true&limit=1`,{headers:headers()});
       if(!r.ok) throw new Error(await r.text());
@@ -90,10 +94,13 @@
   function keyPesquisa(tipo){return `cb_pesquisa_${cicloAtual?.id||'sem-ciclo'}_${tipo}`}
   function respostaSalva(tipo){return localStorage.getItem(keyPesquisa(tipo))==='ok'}
 
+  function pesquisa2Liberada(){return !!(cicloAtual&&cicloAtual.pesquisa_final_liberada) || coladas()>=36}
+
   function abrirPesquisa(tipo){
     if(!cicloAtual){alert('Conecte-se à internet ao menos uma vez para carregar o ciclo atual.');return}
-    if(tipo==='final'&&!cicloAtual.pesquisa_final_liberada){
-      modal(`<div class="dx13-card"><h2>Pesquisa 2 ainda bloqueada</h2><p>A pesquisa final será liberada pela equipe pedagógica após o desenvolvimento do projeto.</p><button class="btn" onclick="fecharModal()">Fechar</button></div>`);return;
+    if(tipo==='final'&&!pesquisa2Liberada()){
+      const c=coladas();
+      modal(`<div class="dx13-card"><h2>Pesquisa 2 ainda bloqueada 🔒</h2><p>A Pesquisa 2 é a avaliação final. Ela será liberada automaticamente quando você <b>completar o álbum</b>.</p><div class="dx13-stat"><b>${c}/36</b><span>figurinhas coladas</span></div><p class="dx13-priv">Assim dá para comparar o que você sabia antes (Pesquisa 1) com o que aprendeu depois.</p><button class="btn" onclick="fecharModal()">Fechar</button></div>`);return;
     }
     if(respostaSalva(tipo)){
       modal(`<div class="dx13-card"><h2>Pesquisa já respondida</h2><p>Sua ${tipo==='inicial'?'Pesquisa Inicial':'Pesquisa Final'} já foi registrada neste ciclo.</p><button class="btn" onclick="fecharModal()">Fechar</button></div>`);return;
@@ -107,6 +114,15 @@
       ${perguntas.map((q,i)=>`<div class="dx13-q"><b>${i+1}. ${q.texto}</b><div>${q.opcoes.map((op,j)=>`<label><input type="radio" name="dxq${i}" value="${j+1}"> ${op}</label>`).join('')}</div></div>`).join('')}
       <button class="btn" onclick="window.dx13EnviarPesquisa('${tipo}')">Enviar pesquisa</button></div>`;
     modal(html);
+  }
+
+  function antesDepois(){
+    let ini={},fim={};
+    try{ini=JSON.parse(localStorage.getItem('cb_pesquisa_indicadores_inicial')||'{}');fim=JSON.parse(localStorage.getItem('cb_pesquisa_indicadores_final')||'{}')}catch(e){}
+    if(!Object.keys(ini).length) return '';
+    const nomes={bullying:'Diferenciar bullying de brincadeira',cyberbullying:'Identificar cyberbullying',agir:'Saber como agir',empatia:'Pensar no outro antes de postar',direitos:'Conhecer leis e canais de ajuda'};
+    const barra=v=>`<span style="display:inline-block;height:9px;width:${(Number(v||0)/4)*100}%;background:currentColor;border-radius:9px"></span>`;
+    return `<div class="dx13-antes-depois"><b>Seu antes e depois</b>${Object.keys(nomes).map(k=>`<div style="margin-top:8px"><small>${nomes[k]}</small><div style="display:grid;grid-template-columns:64px 1fr;gap:4px 8px;align-items:center;font-size:.8rem"><span>Antes</span><span style="color:#94a3b8">${barra(ini[k])}</span><span>Depois</span><span style="color:#16a34a">${barra(fim[k])}</span></div></div>`).join('')}</div>`;
   }
 
   function escAttr(v){return String(v).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')}
@@ -133,10 +149,12 @@
       metodologia,
       anonima:true
     };
-    enfileirar('cb_pesquisas_respostas',payload);
+    if(CFG.enabled) enfileirar('cb_pesquisas_respostas',payload);
     localStorage.setItem(keyPesquisa(tipo),'ok');
+    try{localStorage.setItem(`cb_pesquisa_indicadores_${tipo}`,JSON.stringify(indicadores))}catch(e){}
     const premio=ganharFigurinhaUnica(`pesquisa-${tipo}`);
-    modal(`<div class="dx13-card"><h2>Pesquisa enviada</h2><p>Obrigado por participar. ${premio?`Você ganhou a figurinha <b>${String(premio).padStart(2,'0')}</b> por concluir esta etapa.`:'Sua resposta foi registrada.'}</p><button class="btn" onclick="fecharModal();abrirTela('album')">Ir para o álbum</button></div>`);
+    const comparacao = tipo==='final' ? antesDepois() : '';
+    modal(`<div class="dx13-card"><h2>Pesquisa enviada</h2><p>Obrigado por participar. ${premio?`Você ganhou a figurinha <b>${String(premio).padStart(2,'0')}</b> por concluir esta etapa.`:'Sua resposta foi registrada.'}</p>${comparacao}<button class="btn" onclick="fecharModal();abrirTela('album')">Ir para o álbum</button></div>`);
   };
 
   function atividadeKey(id){return `cb_atividade_${cicloAtual?.id||'x'}_${id}`}
@@ -283,7 +301,7 @@
 
   function atualizarUI(){
     const c=document.getElementById('dx13Cycle');if(c)c.textContent=cicloAtual?`${cicloAtual.nome} • Pesquisa 2: ${cicloAtual.pesquisa_final_liberada?'liberada':'bloqueada'}`:'Ciclo não carregado';
-    const b=document.getElementById('dx13Pesquisa2');if(b)b.textContent=`Pesquisa 2${cicloAtual?.pesquisa_final_liberada?'':' 🔒'}`;
+    const b=document.getElementById('dx13Pesquisa2');if(b)b.textContent=`Pesquisa 2${pesquisa2Liberada()?' ✅':' 🔒'}`;
   }
 
   function instalarEstilos(){
@@ -309,6 +327,7 @@
   }
 
   window.addEventListener('online',async()=>{await buscarCiclo();atualizarUI();flush();syncProgresso()});
+  setInterval(()=>{try{atualizarUI()}catch(e){}},2500);
   window.DUPLA_V13={abrirPesquisa,abrirMicroaulas,abrirMissoes,buscarCiclo,get ciclo(){return cicloAtual}};
   if(document.readyState==='complete') boot(); else window.addEventListener('load',boot);
 })();

@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
                 String lower = url.toLowerCase();
                 if (lower.contains("professor.html") || lower.contains("tela-admin") || lower.contains("concluintes")) return true;
                 if (url.startsWith(APP_ORIGIN + "/assets/")) return false;
-                if (url.startsWith("https://byajgsbilwiojdowqnlp.supabase.co/")) return false;
+                if (url.startsWith("https://") && url.contains(".supabase.co/")) return false;
                 return true;
             }
         });
