@@ -288,9 +288,8 @@
       const mk=(id,txt,fn)=>{const b=document.createElement('button');b.id=id;b.textContent=txt;b.onclick=fn;return b};
       nav.appendChild(mk('dx13Pesquisa1','Pesquisa 1',()=>abrirPesquisa('inicial')));
       nav.appendChild(mk('dx13Pesquisa2','Pesquisa 2',()=>abrirPesquisa('final')));
-      nav.appendChild(mk('dx13Videos','Vídeos',abrirMicroaulas));
       nav.appendChild(mk('dx13Missoes','Missões',abrirMissoes));
-      nav.appendChild(mk('dx13Instalar','Instalar app',instalarApp));
+      if(!noApp()) nav.appendChild(mk('cbBaixarApp','📲 Baixar o app',abrirBaixarApp));
     }
     const hero=document.querySelector('#tela-projeto .hero');
     if(hero&&!document.getElementById('dx13Journey')){
@@ -321,6 +320,35 @@
     const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
     modal(`<div class="dx13-card"><h2>Instalar Combate ao Bullying</h2><p>${ios?'No iPhone/iPad: toque em Compartilhar e depois em “Adicionar à Tela de Início”.':'No Android/Chrome/Edge: abra o menu do navegador e escolha “Instalar app” ou “Adicionar à tela inicial”.'}</p><p>Depois de carregado, o PWA mantém os principais arquivos disponíveis offline.</p><button class="btn" onclick="fecharModal()">Fechar</button></div>`);
   }
+
+  function noApp(){return location.origin.indexOf('appassets.androidplatform.net')>=0}
+
+  function abrirBaixarApp(){
+    const info=window.ALBUM_INFO||{};
+    const apk=info.apkUrl||'';
+    const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+    const android=/android/i.test(navigator.userAgent);
+    modal(`<div class="dx13-card cb-app-card"><h2>📲 Baixar o app</h2>
+      <p>Com o app, o aluno usa o álbum, os simulados, o game e as pesquisas <b>sem internet</b>. O progresso fica salvo no próprio celular.</p>
+      <div class="cb-app-op ${android?'cb-app-destaque':''}">
+        <b>Celular Android</b>
+        <span>Baixe o arquivo do app e toque nele para instalar. Se o celular pedir, permita instalar apps desta fonte.</span>
+        ${apk?`<a class="btn cb-app-btn" href="${apk}" download>Baixar app para Android (.apk)</a>`:'<em>O link do app aparece aqui assim que o álbum for publicado.</em>'}
+      </div>
+      <div class="cb-app-op ${ios?'cb-app-destaque':''}">
+        <b>iPhone / iPad</b>
+        <span>Abra este site no Safari, toque em <b>Compartilhar</b> e depois em <b>Adicionar à Tela de Início</b>. Depois de aberto uma vez com internet, funciona offline.</span>
+      </div>
+      <div class="cb-app-op">
+        <b>Computador ou Chromebook</b>
+        <span>No Chrome ou Edge, use o botão abaixo (ou o ícone de instalar na barra de endereço).</span>
+        <button class="btn" onclick="window.cbInstalarPWA()">Instalar no navegador</button>
+      </div>
+    </div>`);
+  }
+  window.cbAbrirBaixarApp=abrirBaixarApp;
+  window.cbInstalarPWA=instalarApp;
+  window.cbNoApp=noApp;
 
   async function boot(){
     instalarEstilos();configurarPWA();await buscarCiclo();instalarUI();reforcarFicha();monitorarProgresso();syncProgresso();flush();atualizarUI();

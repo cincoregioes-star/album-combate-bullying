@@ -24,6 +24,9 @@ on:
       - ".github/workflows/build-apk.yml"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -59,20 +62,28 @@ jobs:
           node --check student-ui-v22.js
           node --check game/script.js
           node --check game/game-v13.js
-      - name: Build unsigned release APK
+      - name: Build signed release APK
         working-directory: android-wrapper
         run: gradle :app:assembleRelease
-      - name: Locate unsigned APK
+      - name: Locate APK
         run: |
           set -e
           APK=$(find android-wrapper/app/build/outputs/apk/release -name '*.apk' | head -1)
           test -n "$APK"
-          cp "$APK" Combate-Bullying-v1-RELEASE-UNSIGNED.apk
-      - name: Validate APK zip
-        run: unzip -t Combate-Bullying-v1-RELEASE-UNSIGNED.apk >/tmp/unzip.txt && tail -1 /tmp/unzip.txt
-      - name: Upload unsigned APK
+          cp "$APK" combate-bullying.apk
+          unzip -t combate-bullying.apk >/tmp/unzip.txt && tail -1 /tmp/unzip.txt
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Combate-Bullying-v1-RELEASE-UNSIGNED
-          path: Combate-Bullying-v1-RELEASE-UNSIGNED.apk
+          name: combate-bullying-apk
+          path: combate-bullying.apk
           if-no-files-found: error
+      - name: Publicar APK para download no site
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: app
+          name: App Combate ao Bullying (Android)
+          body: "Aplicativo Android do Álbum Combate ao Bullying. Funciona sem internet. Baixe o arquivo combate-bullying.apk e instale no celular."
+          files: combate-bullying.apk
+          make_latest: true

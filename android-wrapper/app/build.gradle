@@ -14,8 +14,19 @@ android {
         versionName '1.0'
     }
 
+    signingConfigs {
+        release {
+            // Chave do app (fica no repositório para que toda versão nova instale por cima da anterior).
+            storeFile file('../combate-bullying.keystore')
+            storePassword 'combate2026'
+            keyAlias 'combatebullying'
+            keyPassword 'combate2026'
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             shrinkResources false
             debuggable false

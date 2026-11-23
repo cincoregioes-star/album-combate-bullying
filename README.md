@@ -21,20 +21,19 @@ cincoregioes@gmail.com
 - **5 simulados de 10 questões.** Quem acerta 10 ganha 1 pacote; com qualquer erro ganha 1 figurinha. As alternativas corretas são redistribuídas automaticamente.
 - **Desafio Final** (10 questões) e **Missão Resgate** (5 questões).
 - **Pesquisa 1** (diagnóstico inicial) e **Pesquisa 2** (avaliação final), anônimas, com indicadores de antes e depois.
-- **4 pílulas visuais**: Bullying não é brincadeira, Cyberbullying, Espectador que age e Pedir ajuda é coragem.
 - **Game match-3** com 5 fases pedagógicas, que revela as figurinhas do álbum e dá prêmios ao álbum.
 - **Painel dos professores** (`professor.html`) com login por nome de usuário, impacto antes e depois, ciclos, concluintes e exportação em CSV.
 - **PWA** offline e **APK Android**.
 
 ## Onde editar o conteúdo
-Todo o conteúdo pedagógico (figurinhas, páginas, simulados, desafio, missão, pesquisas, pílulas e fases do game) está em **`album-data.js`**.
+Todo o conteúdo pedagógico (figurinhas, páginas, simulados, desafio, missão, pesquisas e fases do game) está em **`album-data.js`**.
 
 ## Figurinhas
 As 36 figurinhas da pasta `figurinhas/` são as artes finais, no formato vertical 9:16 (768×1376 px).
 Os prompts usados para gerá-las estão em **`docs/PROMPTS_FIGURINHAS.md`**. Para trocar uma imagem, salve a nova com o mesmo nome (`01.webp` … `36.webp`). Não é preciso mudar nenhum código.
 
 ## Modo livre (padrão) e Supabase
-O álbum vem em **modo livre**: tudo funciona sem servidor (álbum, pacotes, simulados, desafio, missões, game, vídeos e as duas pesquisas) e o progresso de cada aluno fica salvo no próprio aparelho/navegador.
+O álbum vem em **modo livre**: tudo funciona sem servidor (álbum, pacotes, simulados, desafio, missões, game e as duas pesquisas) e o progresso de cada aluno fica salvo no próprio aparelho/navegador.
 
 - **Pesquisa 1** (diagnóstico inicial) pode ser respondida a qualquer momento.
 - **Pesquisa 2** (avaliação final) é liberada automaticamente quando o aluno **completa o álbum** (36 figurinhas coladas). Ao enviá-la, o aluno vê o seu "antes e depois".
@@ -51,9 +50,12 @@ Com o Supabase ligado, o professor também pode liberar a Pesquisa 2 para a turm
 Em **Settings → Pages**, escolha *Deploy from a branch*, depois a branch `main` e a pasta `/ (root)`.
 Endereço: `https://cincoregioes-star.github.io/album-combate-bullying/`. O QR Code está em `qrcode/`.
 
-## APK Android
-O workflow `.github/workflows/build-apk.yml` gera o APK (sem assinatura) a cada alteração na branch `main`. Também dá para rodar manualmente em **Actions**.
-Pacote: `br.com.combatebullying.album`.
+## App para usar sem internet
+- **Android:** a cada atualização na branch `main`, o GitHub gera o app (`combate-bullying.apk`) e publica em **Releases**. O botão **📲 Baixar o app** do site aponta para
+  `https://github.com/cincoregioes-star/album-combate-bullying/releases/latest/download/combate-bullying.apk`.
+  O app já traz todas as figurinhas, áudios e o game: funciona totalmente offline.
+- **iPhone/iPad e computador:** o site é um app instalável (PWA). Depois de aberto uma vez com internet, funciona offline.
+- A chave de assinatura do app está em `android-wrapper/combate-bullying.keystore` (senha no `app/build.gradle`). Mantenha esse arquivo: é ele que permite instalar versões novas por cima das antigas.
 
 ## Leis citadas no conteúdo
 - Lei 13.185/2015: Programa de Combate à Intimidação Sistemática (Bullying)

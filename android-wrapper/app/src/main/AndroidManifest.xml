@@ -3,6 +3,8 @@
     <application
         android:allowBackup="false"
         android:label="Combate ao Bullying"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.CombateBullying"
         android:usesCleartextTraffic="false">

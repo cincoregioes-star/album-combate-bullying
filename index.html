@@ -47,6 +47,7 @@
     const abrir = typeof forcar==='boolean' ? forcar : !m.classList.contains('aberto');
     m.classList.toggle('aberto',abrir); b.setAttribute('aria-expanded',abrir);
   }
+  if(location.origin.indexOf('appassets.androidplatform.net')>=0) document.documentElement.classList.add('cb-no-app');
   document.addEventListener('click',e=>{
     const m=document.getElementById('cbMenu'); if(!m||!m.classList.contains('aberto')) return;
     if(e.target.closest('#cbMaisBtn')) return;
@@ -76,7 +77,8 @@
         <button onclick="abrirTela('simulados')"><span>📝</span><b>Simulados</b><small>10 acertos = 1 pacote</small></button>
         <button onclick="window.location.href='game/index.html'"><span>🎮</span><b>Game</b><small>Cada fase dá prêmios</small></button>
         <button onclick="document.getElementById('dx13Missoes')?.click()"><span>🎯</span><b>Missões</b><small>Desafios extras</small></button>
-        <button onclick="document.getElementById('dx13Videos')?.click()"><span>🎬</span><b>Vídeos</b><small>Pílulas de 1 minuto</small></button>
+        <button id="cbTileApp" onclick="window.cbAbrirBaixarApp&&window.cbAbrirBaixarApp()"><span>📲</span><b>Baixar o app</b><small>Use sem internet</small></button>
+        <button id="cbTilePesquisa" onclick="document.getElementById('dx13Pesquisa1')?.click()"><span>📊</span><b>Pesquisa 1</b><small>Diagnóstico inicial</small></button>
       </div>
       <p class="creditos cb-creditos-rodape">Escola Municipal Horizonte Azul (escola fictícia) • Idealização e desenvolvimento: Prof. Carlos André Tavares de Lima</p>
     </section>

@@ -10,7 +10,9 @@ window.ALBUM_INFO = {
   autor: "Prof. Carlos André Tavares de Lima",
   autorDescricao: "Professor de Geografia • Administração Escolar • Criador de Projetos Digitais Educativos",
   autorEmail: "cincoregioes@gmail.com",
-  totalFigurinhas: 36
+  totalFigurinhas: 36,
+  // Link do app Android (gerado automaticamente pelo GitHub a cada atualização)
+  apkUrl: "https://github.com/cincoregioes-star/album-combate-bullying/releases/latest/download/combate-bullying.apk"
 };
 var FIGURINHAS = [
  {
@@ -1331,8 +1333,8 @@ window.CB_PESQUISA_FINAL = [
   "metodologia": true
  },
  {
-  "id": "videos",
-  "texto": "As pílulas visuais ajudaram a relacionar o conteúdo com situações reais.",
+  "id": "missoes",
+  "texto": "As missões e o desafio final ajudaram a revisar o que aprendi.",
   "opcoes": [
    "Discordo totalmente",
    "Discordo",
