@@ -7,7 +7,7 @@
    ============================================================ */
 :root{
   --cb-azul:#1e3a8a; --cb-ouro:#facc15; --cb-ouro2:#fde68a; --cb-fundo:#07111f;
-  --cb-card-r:16px; --cb-prop:2/3;
+  --cb-card-r:16px; --cb-prop:768/1376;
 }
 
 /* ---------------- CABEÇALHO ---------------- */
@@ -192,3 +192,8 @@ html body header.cb-topo nav.cb-menu #dx13Instalar{order:98!important}
 html body main section#tela-album.tela:not(.ativa),
 html body main section#tela-projeto.tela:not(.ativa),
 html body main section#tela-simulados.tela:not(.ativa){display:none!important}
+/* a arte final já traz moldura e número: sem contorno extra quando colada */
+html body .cb-colada .cb-card-moldura{outline:none!important; background:transparent!important}
+html body .cb-colada.cb-rara .cb-card-moldura{box-shadow:0 0 22px rgba(250,204,21,.35),0 12px 28px rgba(0,0,0,.45)!important}
+html body .cb-colada.cb-especial .cb-card-moldura{box-shadow:0 0 18px rgba(196,181,253,.35),0 12px 28px rgba(0,0,0,.45)!important}
+html body #albumPages .pagina .texto-pagina{display:block!important; -webkit-line-clamp:unset!important; line-clamp:unset!important; max-height:none!important; height:auto!important; overflow:visible!important; text-overflow:clip!important; white-space:normal!important}
