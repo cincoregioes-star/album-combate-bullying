@@ -13,6 +13,10 @@ on:
       - "supabase-config.js"
       - "album-data.js"
       - "jornada-cb.js"
+      - "painel-config.js"
+      - "painel-cb.js"
+      - "painel-app.js"
+      - "professor.html"
       - "simulados-v13.js"
       - "ux-mobile-fix-v20.css"
       - "ux-mobile-fix-v20.js"
@@ -47,8 +51,8 @@ jobs:
           set -e
           rm -rf android-wrapper/app/src/main/assets/www
           mkdir -p android-wrapper/app/src/main/assets/www
-          cp index.html style.css layout-cb.css tema-cb.css album-data.js script.js supabase-config.js jornada-cb.js simulados-v13.js ux-mobile-fix-v20.css ux-mobile-fix-v20.js student-ui-v22.css student-ui-v22.js android-wrapper/app/src/main/assets/www/
-          cp -r figurinhas audio game android-wrapper/app/src/main/assets/www/
+          cp index.html style.css layout-cb.css tema-cb.css album-data.js script.js supabase-config.js jornada-cb.js simulados-v13.js ux-mobile-fix-v20.css ux-mobile-fix-v20.js student-ui-v22.css student-ui-v22.js painel-config.js painel-cb.js painel-app.js professor.html android-wrapper/app/src/main/assets/www/
+          cp -r figurinhas audio game qrcode android-wrapper/app/src/main/assets/www/
           if [ -f logo-escola.png ]; then cp logo-escola.png android-wrapper/app/src/main/assets/www/; fi
           if [ -f manifest.webmanifest ]; then cp manifest.webmanifest android-wrapper/app/src/main/assets/www/; fi
       - name: JavaScript syntax audit
