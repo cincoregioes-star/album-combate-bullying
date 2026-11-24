@@ -14,7 +14,7 @@
       <div class="dx-credito-item dx-credito-digital">
         <span class="dx-credito-titulo">Idealização, projeto digital, desenvolvimento do aplicativo e arquitetura da plataforma</span>
         <strong>Prof. Carlos André Tavares de Lima</strong>
-        <small>Licenciado em Geografia • Especialista em Políticas Públicas e Gestão Pública • Criador de Projetos Digitais Educativos</small>
+        <small>Licenciado em Geografia • Especialista em Políticas Públicas, Serviço Social, Administração Escolar, Ciência de Dados e Gestão Pública • Criador de Projetos Digitais Educativos</small>
         <small class="dx-credito-contato">Contato profissional: cincoregioes@gmail.com</small>
       </div>`;
     atual.replaceWith(box);
