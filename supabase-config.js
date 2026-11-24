@@ -3,6 +3,8 @@
 // Tabelas e funções próprias (prefixo cb_).
 // Para criar a estrutura, rode supabase/COMBATE_BULLYING_SUPABASE.sql no SQL Editor.
 // ============================================================
+// Projeto-piloto: pesquisas em papel, sem identificação no celular.
+window.CB_MODO_PILOTO = true;
 window.SUPABASE_CONFIG = {
   // MODO LIVRE: enabled=false. O álbum funciona por completo e salva tudo no próprio aparelho.
   // Para ter o painel dos professores, crie um projeto no Supabase, rode
@@ -60,7 +62,7 @@ window.SUPABASE_CONFIG = {
   function instalarBase(){
     deviceId();
     const nav=document.querySelector('.topo nav');
-    if(nav&&!document.getElementById('dxBtnPerfil')){const b=document.createElement('button');b.id='dxBtnPerfil';b.textContent='Identificar aluno 🔒';b.onclick=abrirIdentificacao;nav.appendChild(b)}
+    if(nav&&!window.CB_MODO_PILOTO&&!document.getElementById('dxBtnPerfil')){const b=document.createElement('button');b.id='dxBtnPerfil';b.textContent='Identificar aluno 🔒';b.onclick=abrirIdentificacao;nav.appendChild(b)}
     substituirConclusao();flush();
   }
 

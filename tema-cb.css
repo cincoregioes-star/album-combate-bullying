@@ -273,3 +273,13 @@ html body:not(#cb) #tela-simulados .pergunta-box{
 }
 html body:not(#cb) #modal{backdrop-filter:none!important; -webkit-backdrop-filter:none!important; background:rgba(5,8,20,.82)!important}
 html body:not(#cb) header.topo.cb-topo{backdrop-filter:none!important; -webkit-backdrop-filter:none!important; background:rgba(10,15,31,.96)!important}
+
+/* ===== Modo piloto: tela "Mostrar ao professor" ===== */
+html body:not(#cb) .cb-prof{text-align:center}
+html body:not(#cb) .cb-prof-relogio{display:flex;flex-direction:column;align-items:center;gap:2px;margin:6px 0 12px;padding:10px;border-radius:14px;background:linear-gradient(135deg,#1e1b4b,#312e81);border:1px solid rgba(165,180,252,.35)}
+html body:not(#cb) .cb-prof-relogio b{font-size:2.1rem;letter-spacing:.06em;color:#fde68a;font-variant-numeric:tabular-nums}
+html body:not(#cb) .cb-prof-relogio span{font-size:.85rem;color:#c7d2fe;text-transform:capitalize}
+html body:not(#cb) .cb-prof-barra{height:12px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden;margin:0 0 12px}
+html body:not(#cb) .cb-prof-barra i{display:block;height:100%;background:linear-gradient(90deg,#f97316,#facc15)}
+html body:not(#cb) .cb-prof-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+html body:not(#cb) .cb-prof-grid .dx13-stat{margin:0}

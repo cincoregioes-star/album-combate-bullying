@@ -12,6 +12,7 @@
   const ESCALA = ['Discordo totalmente','Discordo','Concordo','Concordo totalmente'];
   const FREQUENCIA = ['Nunca','Raramente','Algumas vezes','Muitas vezes'];
 
+  const PILOTO = window.CB_MODO_PILOTO !== false;
   const PESQUISA_INICIAL = window.CB_PESQUISA_INICIAL || [];
   const PESQUISA_FINAL = window.CB_PESQUISA_FINAL || [];
   const MICROAULAS = window.CB_MICROAULAS || [];
@@ -202,6 +203,31 @@
   }
   function coladas(){try{return FIGURINHAS.filter(f=>reg(f.numero).colada).length}catch(e){return 0}}
 
+
+  let relogioProf=null;
+  function abrirProgressoProfessor(){
+    if(typeof modal!=='function') return;
+    if(typeof cbAlternarMenu==='function') cbAlternarMenu(false);
+    const c=coladas(), sims=simuladosDistintos();
+    let pac=0,rep=0;try{pac=estado.pacotes||0;rep=estado.repetidas||0}catch(e){}
+    const pct=Math.round(c/36*100);
+    modal(`<div class="dx13-card cb-prof"><h2>Progresso do aluno</h2>
+      <div class="cb-prof-relogio"><b id="cbProfHora">--:--:--</b><span id="cbProfData"></span></div>
+      <div class="cb-prof-barra"><i style="width:${pct}%"></i></div>
+      <div class="cb-prof-grid">
+        <div class="dx13-stat"><b>${c}/36</b><span>figurinhas coladas</span></div>
+        <div class="dx13-stat"><b>${sims}/5</b><span>simulados concluídos</span></div>
+        <div class="dx13-stat"><b>${pac}</b><span>pacotes fechados</span></div>
+        <div class="dx13-stat"><b>${rep}</b><span>repetidas</span></div>
+      </div>
+      <p class="dx13-priv">Professor(a): confira se a hora acima está correndo e bate com o relógio da sala. Assim você sabe que não é um print antigo.</p>
+      <button class="btn" onclick="fecharModal()">Fechar</button></div>`);
+    const tick=()=>{const h=document.getElementById('cbProfHora');if(!h){clearInterval(relogioProf);relogioProf=null;return}
+      const d=new Date();h.textContent=d.toLocaleTimeString('pt-BR');const e=document.getElementById('cbProfData');if(e)e.textContent=d.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'})};
+    if(relogioProf)clearInterval(relogioProf);tick();relogioProf=setInterval(tick,1000);
+  }
+  window.cbMostrarProfessor=abrirProgressoProfessor;
+
   function abrirMissoes(){
     const sims=simuladosDistintos(), faltam=36-coladas();
     const resgate=sims>=5&&faltam>0;
@@ -286,21 +312,30 @@
     const nav=document.querySelector('.topo nav');
     if(nav&&!document.getElementById('dx13Pesquisa1')){
       const mk=(id,txt,fn)=>{const b=document.createElement('button');b.id=id;b.textContent=txt;b.onclick=fn;return b};
-      nav.appendChild(mk('dx13Pesquisa1','Pesquisa 1',()=>abrirPesquisa('inicial')));
-      nav.appendChild(mk('dx13Pesquisa2','Pesquisa 2',()=>abrirPesquisa('final')));
+      if(PILOTO){
+        nav.appendChild(mk('cbMostrarProfessor','✅ Mostrar ao professor',abrirProgressoProfessor));
+      }else{
+        nav.appendChild(mk('dx13Pesquisa1','Pesquisa 1',()=>abrirPesquisa('inicial')));
+        nav.appendChild(mk('dx13Pesquisa2','Pesquisa 2',()=>abrirPesquisa('final')));
+      }
       nav.appendChild(mk('dx13Missoes','Missões',abrirMissoes));
       if(!noApp()) nav.appendChild(mk('cbBaixarApp','📲 Baixar o app',abrirBaixarApp));
     }
     const hero=document.querySelector('#tela-projeto .hero');
     if(hero&&!document.getElementById('dx13Journey')){
-      const c=document.createElement('div');c.id='dx13Journey';c.className='dx13-journey';c.innerHTML=`<b>Jornada pedagógica</b><div>1. Diagnóstico inicial → 2. Aprendizagem → 3. Gamificação/Álbum → 4. Diagnóstico final</div><small id="dx13Cycle">Carregando ciclo...</small>`;hero.appendChild(c);
+      const c=document.createElement('div');c.id='dx13Journey';c.className='dx13-journey';c.innerHTML=`<b>Jornada pedagógica</b><div>${PILOTO?'1. Pesquisa inicial em sala (papel) → 2. Álbum, simulados e game → 3. Pesquisa final em sala (papel)':'1. Diagnóstico inicial → 2. Aprendizagem → 3. Gamificação/Álbum → 4. Diagnóstico final'}</div><small id="dx13Cycle">Carregando ciclo...</small>`;hero.appendChild(c);
+    }
+    const tile=document.getElementById('cbTilePesquisa');
+    if(tile&&PILOTO&&!tile.dataset.piloto){
+      tile.dataset.piloto='1';tile.onclick=abrirProgressoProfessor;tile.removeAttribute('onclick');tile.onclick=abrirProgressoProfessor;
+      tile.innerHTML='<span>✅</span><b>Mostrar ao professor</b><small>Meu progresso</small>';
     }
     atualizarUI();
   }
 
   function atualizarUI(){
     const set=(el,t)=>{if(el&&el.textContent!==t)el.textContent=t};
-    set(document.getElementById('dx13Cycle'),cicloAtual?`${cicloAtual.nome} • Pesquisa 2: ${cicloAtual.pesquisa_final_liberada?'liberada':'bloqueada'}`:'Ciclo não carregado');
+    set(document.getElementById('dx13Cycle'),PILOTO?'Projeto-piloto: as pesquisas são feitas em papel, na sala de aula.':cicloAtual?`${cicloAtual.nome} • Pesquisa 2: ${cicloAtual.pesquisa_final_liberada?'liberada':'bloqueada'}`:'Ciclo não carregado');
     set(document.getElementById('dx13Pesquisa2'),`Pesquisa 2${pesquisa2Liberada()?' ✅':' 🔒'}`);
   }
 
