@@ -1,4 +1,4 @@
-const CACHE='combate-bullying-v22';
+const CACHE='combate-bullying-v23';
 const CORE=[
   './','./index.html','./style.css','./ux-mobile-fix-v20.css','./ux-mobile-fix-v20.js','./album-data.js','./layout-cb.css','./tema-cb.css','./logo-escola.png','./script.js','./supabase-config.js','./jornada-cb.js','./painel-cb.js','./painel-config.js','./painel-app.js','./simulados-v13.js','./student-ui-v22.css','./student-ui-v22.js','./manifest.webmanifest','./logo-escola.png',
   './professor.html','./professor-v24.js','./professor-ui-v23.js',
