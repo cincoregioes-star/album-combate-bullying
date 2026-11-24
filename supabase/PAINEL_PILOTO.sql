@@ -284,8 +284,9 @@ grant execute on function public.cbp_excluir_turma(uuid, uuid) to anon, authenti
 grant execute on function public.cbp_criar_usuario_escola(uuid, uuid, text, text, text) to anon, authenticated;
 
 -- ---------- primeiro acesso da Secretaria ----------
--- Troque a senha abaixo antes de rodar (mínimo 8 caracteres) e,
--- depois do primeiro login, troque de novo pelo painel.
+-- O login "secretaria" é criado com uma senha aleatória que ninguém conhece.
+-- Para definir a sua senha, rode depois, no SQL Editor, trocando o texto:
+--   update public.cbp_usuarios set senha_hash = extensions.crypt('SUA-SENHA-AQUI', extensions.gen_salt('bf')) where usuario = 'secretaria';
 insert into public.cbp_usuarios(usuario, senha_hash, nome, perfil)
-values ('secretaria', extensions.crypt('TROQUE-ESTA-SENHA', extensions.gen_salt('bf')), 'Secretaria Municipal de Educação', 'secretaria')
+values ('secretaria', extensions.crypt(encode(extensions.gen_random_bytes(24), 'base64'), extensions.gen_salt('bf')), 'Secretaria Municipal de Educação', 'secretaria')
 on conflict (usuario) do nothing;
