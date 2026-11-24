@@ -63,3 +63,13 @@ Endereço: `https://cincoregioes-star.github.io/album-combate-bullying/`. O QR C
 - Lei 13.663/2018: altera a LDB para incluir a prevenção do bullying e a cultura de paz
 - Lei 13.277/2016: 7 de abril, Dia Nacional de Combate ao Bullying e à Violência na Escola
 - ECA (Lei 8.069/1990), Lei 7.716/1989 e Lei 13.146/2015
+
+## Painel do piloto (professor e Secretaria)
+
+- Endereço: `professor.html` (ex.: https://cincoregioes-star.github.io/album-combate-bullying/professor.html).
+- Banco: projeto Supabase `combate-bullying` (`kjtoayyyhwhbcuqyxijj`), criado com `supabase/PAINEL_PILOTO.sql`.
+- Nenhum nome de aluno vai para o servidor. Cada aluno recebe um cartão com um código aleatório de 5 caracteres, que funciona em um único celular. O app só envia figurinhas, simulados, pacotes e a data de uso.
+- A Secretaria cadastra escolas e cria o login de cada escola. A escola cria turmas (os códigos são gerados na hora) e imprime os cartões.
+- Senha da Secretaria: o SQL cria o usuário `secretaria` com senha aleatória. Para definir a sua, rode no SQL Editor:
+  `update public.cbp_usuarios set senha_hash = extensions.crypt('SUA-SENHA', extensions.gen_salt('bf')) where usuario = 'secretaria';`
+- As pesquisas inicial e final continuam em papel, anônimas.
