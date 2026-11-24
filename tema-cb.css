@@ -302,3 +302,11 @@ html body:not(#cb) button.opcao.certa{background:rgba(34,197,94,.2)!important;bo
 html body:not(#cb) button.opcao.errada{background:rgba(239,68,68,.2)!important;border-color:#ef4444!important;color:#fff!important}
 html body:not(#cb) button.opcao.apagada{opacity:.45}
 html body:not(#cb) button.opcao:disabled{cursor:default}
+
+/* ===== Perguntas destacadas das respostas ===== */
+html body:not(#cb) .pergunta-box > p:first-child,
+html body:not(#cb) .pergunta-box > p:first-child b,
+html body:not(#cb) #tela-simulados .pergunta-box > p:first-child,
+html body:not(#cb) #tela-simulados .pergunta-box > p:first-child b{color:#fcd34d!important;font-size:1.08rem;line-height:1.35}
+html body:not(#cb) .pergunta-box > p:first-child{margin:0 0 12px;padding:0 0 10px;border-bottom:1px solid rgba(252,211,77,.25)}
+html body:not(#cb) button.opcao{color:#e8ecf8!important;font-weight:600}
