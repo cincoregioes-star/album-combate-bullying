@@ -147,18 +147,24 @@
   <script src="script.js"></script>
   <script src="game-v13.js"></script>
 <script>
-/* Ajusta o game para caber na altura da tela do computador, sem rolar. */
+/* Computador: o tabuleiro diminui para caber na altura da tela; o resto ocupa a largura toda. */
 (function(){
   function ajustar(){
-    var pg=document.querySelector('.pagina'), top=document.querySelector('.topbar'), centro=document.querySelector('.centro'); if(!pg||!top||!centro) return;
+    var pg=document.querySelector('.pagina'), tab=document.getElementById('tabuleiro'), centro=document.querySelector('.centro'); if(!pg||!tab||!centro) return;
     var paineis=document.querySelectorAll('.layout > .painel');
-    pg.style.zoom=''; paineis.forEach(function(p){p.style.removeProperty('max-height');p.style.removeProperty('overflow-y');});
+    pg.style.zoom='';
+    tab.style.removeProperty('width'); tab.style.removeProperty('height');
+    paineis.forEach(function(p){p.style.removeProperty('max-height');});
+    document.body.classList.toggle('cb-desktop', window.innerWidth>=1101);
     if(window.innerWidth<1101) return;
-    paineis.forEach(function(p){p.style.setProperty('max-height','120px','important');p.style.setProperty('overflow-y','auto','important');});
+    paineis.forEach(function(p){p.style.setProperty('max-height','120px','important');});
+    var topo=tab.getBoundingClientRect().top+window.scrollY;
+    var abaixo=centro.getBoundingClientRect().bottom-tab.getBoundingClientRect().bottom;
+    var lado=Math.floor(window.innerHeight-topo-abaixo-50);
+    lado=Math.max(260,Math.min(640,lado));
+    tab.style.setProperty('width',lado+'px','important'); tab.style.setProperty('height',lado+'px','important');
     var h=centro.offsetHeight;
     paineis.forEach(function(p){p.style.setProperty('max-height',h+'px','important');});
-    var util=pg.getBoundingClientRect().top+window.scrollY+pg.scrollHeight+80, z=Math.min(1, window.innerHeight/util);
-    z=Math.max(0.55,z); if(z<0.99){ pg.style.zoom=z.toFixed(3); document.body.style.paddingBottom='0'; }
   }
   window.addEventListener('load',function(){ajustar();setTimeout(ajustar,600);setTimeout(ajustar,1800);});
   window.addEventListener('resize',function(){clearTimeout(window.__cbz);window.__cbz=setTimeout(ajustar,150);});
