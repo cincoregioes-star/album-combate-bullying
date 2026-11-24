@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Modo Projetor — Combate ao Bullying</title>
+<link rel="icon" href="logo-escola.png">
+<style>
+:root{--bg:#070b1a;--card:#111a3a;--borda:rgba(148,163,255,.22);--txt:#eef1fb;--txt2:#aab4d4;--ok:#22c55e;--erro:#ef4444}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:radial-gradient(1200px 600px at 15% -10%,rgba(99,102,241,.35),transparent),radial-gradient(900px 500px at 110% 110%,rgba(249,115,22,.25),transparent),var(--bg);color:var(--txt);font-family:"Segoe UI",system-ui,Arial,sans-serif;display:flex;flex-direction:column}
+header{display:flex;align-items:center;justify-content:space-between;padding:1.2vh 2vw;gap:1vw;flex-wrap:wrap}
+.marca{display:flex;align-items:center;gap:.8vw;font-weight:800;font-size:clamp(16px,1.6vw,28px)}.marca img{height:clamp(34px,4vh,56px);border-radius:50%}
+nav{display:flex;gap:.6vw;flex-wrap:wrap}
+button{font:inherit;border:0;border-radius:14px;padding:.7em 1.1em;font-weight:800;cursor:pointer;color:#fff;background:#24305e;font-size:clamp(14px,1.2vw,22px)}
+button:hover{filter:brightness(1.15)}button.ativo{background:linear-gradient(135deg,#6366f1,#8b5cf6)}
+.sol{background:linear-gradient(135deg,#fb923c,#f43f5e)}
+main{flex:1;display:flex;flex-direction:column;padding:1vh 3vw 3vh;min-height:0}
+.inicio{flex:1;display:grid;place-items:center;text-align:center}
+.inicio h1{font-size:clamp(28px,4vw,72px);margin:0 0 2vh}.inicio p{font-size:clamp(16px,1.6vw,30px);color:var(--txt2);margin:0 0 4vh}
+.escolha{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5vw;width:min(1300px,94vw)}
+.escolha button{padding:3vh 1.5vw;border-radius:22px;background:var(--card);border:1px solid var(--borda);text-align:left;font-size:clamp(16px,1.5vw,28px)}
+.escolha small{display:block;color:var(--txt2);font-weight:600;margin-top:.6vh;font-size:.7em}
+.topo-q{display:flex;justify-content:space-between;align-items:center;color:var(--txt2);font-size:clamp(14px,1.4vw,26px);margin-bottom:1.5vh;gap:1vw;flex-wrap:wrap}
+.pergunta{font-size:clamp(24px,3.2vw,60px);font-weight:800;line-height:1.2;margin:0 0 3vh}
+.opcoes{display:grid;grid-template-columns:1fr 1fr;gap:1.6vw;flex:1;min-height:0}
+.op{display:flex;align-items:center;gap:1.2vw;background:var(--card);border:2px solid var(--borda);border-radius:22px;padding:2vh 1.6vw;font-size:clamp(18px,2.1vw,40px);font-weight:700;line-height:1.2}
+.op .l{flex:0 0 auto;width:2.1em;height:2.1em;border-radius:50%;display:grid;place-items:center;font-weight:900;color:#fff}
+.op:nth-child(1) .l{background:#6366f1}.op:nth-child(2) .l{background:#f97316}.op:nth-child(3) .l{background:#14b8a6}.op:nth-child(4) .l{background:#e11d48}
+.op.certa{border-color:var(--ok);background:rgba(34,197,94,.18)}.op.apagada{opacity:.3}
+.rodape{display:flex;justify-content:space-between;align-items:center;margin-top:2.5vh;gap:1vw;flex-wrap:wrap}
+.placar{font-size:clamp(16px,1.6vw,30px);font-weight:800}
+.placar span{color:#fde68a}
+.final{flex:1;display:grid;place-items:center;text-align:center}.final b{font-size:clamp(60px,10vw,180px);color:#fde68a;display:block}
+.paginas{display:flex;gap:.6vw;flex-wrap:wrap;margin-bottom:2vh}
+.grade{display:grid;grid-template-columns:repeat(6,1fr);gap:1.2vw;flex:1;min-height:0}
+.fig{background:var(--card);border:1px solid var(--borda);border-radius:16px;padding:.8vh;cursor:pointer;display:flex;flex-direction:column;gap:.6vh}
+.fig img{width:100%;aspect-ratio:768/1376;object-fit:cover;border-radius:10px;background:#0b1228}
+.fig span{font-size:clamp(12px,1vw,18px);font-weight:700;text-align:center}
+.detalhe{flex:1;display:grid;grid-template-columns:minmax(0,30%) 1fr;gap:3vw;align-items:center;min-height:0}
+.detalhe img{width:100%;max-height:78vh;object-fit:contain;border-radius:18px}
+.detalhe h2{font-size:clamp(26px,3vw,56px);margin:0 0 2vh}.detalhe p{font-size:clamp(17px,1.8vw,34px);line-height:1.35;margin:0 0 2vh}
+.detalhe .atitude{background:rgba(250,204,21,.12);border-left:6px solid #facc15;padding:1.5vh 1.2vw;border-radius:10px}
+.dica{color:var(--txt2);font-size:clamp(12px,1vw,18px)}
+@media(max-width:800px){.opcoes{grid-template-columns:1fr}.grade{grid-template-columns:repeat(3,1fr)}.detalhe{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="marca"><img src="logo-escola.png" alt="">Combate ao Bullying · Modo Projetor</div>
+  <nav><button onclick="P.inicio()">Início</button><button onclick="P.telaFigurinhas(1)">Figurinhas</button><button onclick="P.tela()">⛶ Tela cheia</button><button onclick="location.href='index.html'">Sair</button></nav>
+</header>
+<main id="m"></main>
+<script src="album-data.js"></script>
+<script>
+const P=(function(){
+  const m=document.getElementById('m');
+  const esc=t=>String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const SIM=window.CB_SIMULADOS||[];const PAG=window.PAGINAS||[];const FIG=window.FIGURINHAS||[];
+  let sim=null,i=0,revelada=false,pontos=0;
+  function inicio(){
+    sim=null;
+    m.innerHTML=`<div class="inicio"><div><h1>Vamos aprender juntos?</h1><p>Escolha um simulado para a turma responder junta, ou mostre as figurinhas do álbum.</p>
+      <div class="escolha">${SIM.map((s,k)=>`<button onclick="P.comecar(${k})">Simulado ${k+1}<small>${esc(s.titulo)} · ${s.perguntas.length} perguntas</small></button>`).join('')}
+      <button class="sol" onclick="P.telaFigurinhas(1)">Figurinhas<small style="color:#fff">36 figurinhas em ${PAG.length} páginas</small></button></div></div></div>`;
+  }
+  function comecar(k){sim=SIM[k];i=0;pontos=0;pergunta();}
+  function pergunta(){
+    revelada=false;const q=sim.perguntas[i];
+    m.innerHTML=`<div class="topo-q"><span>${esc(sim.titulo)}</span><span>Pergunta ${i+1} de ${sim.perguntas.length}</span></div>
+      <h1 class="pergunta">${esc(q[0])}</h1>
+      <div class="opcoes">${q[1].map((o,k)=>`<div class="op" id="op${k}"><span class="l">${'ABCD'[k]}</span><span>${esc(o)}</span></div>`).join('')}</div>
+      <div class="rodape"><span class="dica">A turma escolhe a resposta (mãos levantadas, cartões ou votação). Espaço/Enter revela · seta → avança</span>
+      <div style="display:flex;gap:.8vw;align-items:center;flex-wrap:wrap"><span class="placar">Acertos da turma: <span id="pts">${pontos}</span></span>
+      <button id="btnAcao" class="ativo" onclick="P.acao()">Revelar resposta</button></div></div>`;
+  }
+  function acao(){
+    if(!sim)return;
+    if(!revelada){
+      const q=sim.perguntas[i];revelada=true;
+      q[1].forEach((_,k)=>document.getElementById('op'+k).classList.add(k===q[2]?'certa':'apagada'));
+      const b=document.getElementById('btnAcao');b.textContent='Próxima →';
+      b.insertAdjacentHTML('beforebegin','<button style="background:#166534" onclick="P.acertou(this)">✓ A turma acertou</button>');
+    }else proxima();
+  }
+  function acertou(b){pontos++;document.getElementById('pts').textContent=pontos;b.remove();}
+  function proxima(){
+    if(i<sim.perguntas.length-1){i++;pergunta();return;}
+    m.innerHTML=`<div class="final"><div><p style="font-size:clamp(20px,2vw,36px);color:var(--txt2)">${esc(sim.titulo)}</p><b>${pontos}/${sim.perguntas.length}</b>
+      <p style="font-size:clamp(20px,2vw,36px)">acertos da turma</p><button class="ativo" onclick="P.inicio()">Escolher outro</button></div></div>`;sim=null;
+  }
+  function telaFigurinhas(p){
+    sim=null;const pg=PAG.find(x=>x.pagina===p)||PAG[0];const figs=FIG.filter(f=>f.pagina===p);
+    m.innerHTML=`<div class="paginas">${PAG.map(x=>`<button class="${x.pagina===p?'ativo':''}" onclick="P.telaFigurinhas(${x.pagina})">${x.pagina}. ${esc(x.titulo)}</button>`).join('')}</div>
+      <p class="dica" style="font-size:clamp(14px,1.4vw,26px);margin:0 0 1.5vh">${esc(pg.texto||'')}</p>
+      <div class="grade">${figs.map(f=>`<div class="fig" onclick="P.detalhe(${f.numero})"><img src="figurinhas/${String(f.numero).padStart(2,'0')}.webp" alt=""><span>${f.numero}. ${esc(f.titulo)}</span></div>`).join('')}</div>`;
+  }
+  function detalhe(n){
+    const f=FIG.find(x=>x.numero===n);const pg=PAG.find(x=>x.pagina===f.pagina)||{};
+    m.innerHTML=`<div class="detalhe"><img src="figurinhas/${String(n).padStart(2,'0')}.webp" alt="">
+      <div><p class="dica">Página ${f.pagina} · Figurinha ${n} de 36</p><h2>${esc(f.titulo)}</h2><p>${esc(f.mensagem)}</p><p>${esc(f.importancia||'')}</p>
+      ${pg.atitude?`<p class="atitude"><b>Atitude:</b> ${esc(pg.atitude)}</p>`:''}
+      <div style="display:flex;gap:.8vw;flex-wrap:wrap"><button onclick="P.detalhe(${n>1?n-1:36})">← Anterior</button><button onclick="P.telaFigurinhas(${f.pagina})">Voltar à página</button><button class="ativo" onclick="P.detalhe(${n<36?n+1:1})">Próxima →</button></div></div></div>`;
+  }
+  function tela(){if(!document.fullscreenElement)document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();else document.exitFullscreen();}
+  document.addEventListener('keydown',e=>{if(!sim)return;if(e.key===' '||e.key==='Enter'||e.key==='ArrowRight'){e.preventDefault();acao();}});
+  inicio();
+  return {inicio,comecar,acao,acertou,telaFigurinhas,detalhe,tela};
+})();
+</script>
+</body>
+</html>

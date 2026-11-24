@@ -38,12 +38,14 @@
     <nav id="cbMenu" class="cb-menu" aria-label="Mais opções">
       <button onclick="abrirTela('projeto')">Sobre o projeto</button>
       <button id="cbAreaProf">👩‍🏫 Área do professor</button>
+      <button id="cbProjetor">📽 Modo Projetor</button>
       <button id="btnSomAlbum" onclick="alternarSom()">Som: OFF</button>
       <button class="cb-perigo" onclick="confirmarReinicio()">Reiniciar álbum</button>
     </nav>
   </header>
   <script>
   document.getElementById('cbAreaProf').addEventListener('click',function(){location.href='prof'+'essor.html'});
+  document.getElementById('cbProjetor').addEventListener('click',function(){location.href='projetor.html'});
   function cbAlternarMenu(forcar){
     const m=document.getElementById('cbMenu'), b=document.getElementById('cbMaisBtn');
     const abrir = typeof forcar==='boolean' ? forcar : !m.classList.contains('aberto');

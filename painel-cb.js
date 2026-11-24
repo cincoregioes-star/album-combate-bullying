@@ -13,6 +13,7 @@
     if(!d){ d = (crypto.randomUUID ? crypto.randomUUID() : 'd-' + Date.now() + '-' + Math.random().toString(36).slice(2)); localStorage.setItem(K_DEV, d); }
     return d;
   }
+  function codigoDaUrl(){ try{ return (new URLSearchParams(location.search).get('codigo') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 5); }catch(e){ return ''; } }
   function codigo(){ return localStorage.getItem(K_COD) || ''; }
   function info(){ try{ return JSON.parse(localStorage.getItem(K_INFO) || 'null'); }catch(e){ return null; } }
   function esc(t){ return String(t == null ? '' : t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -47,7 +48,7 @@
       <p id="cbpMsg" class="cbp-msg">${msg ? esc(msg) : ''}</p>
       <button class="btn" id="cbpBtn" onclick="window.cbpVincular()">Confirmar código</button>
       <p class="dx13-priv">Não digite seu nome. O código serve só para o professor acompanhar quantas figurinhas e simulados você já fez.</p></div>`);
-    setTimeout(() => { const c = document.getElementById('cbpCampo'); if(c){ c.focus(); c.addEventListener('keydown', e => { if(e.key === 'Enter') window.cbpVincular(); }); } }, 50);
+    setTimeout(() => { const c = document.getElementById('cbpCampo'); if(c){ if(!c.value && codigoDaUrl()) c.value = codigoDaUrl(); c.focus(); c.addEventListener('keydown', e => { if(e.key === 'Enter') window.cbpVincular(); }); } }, 50);
   }
 
   window.cbpVincular = async function(){
@@ -103,7 +104,7 @@
     if(b) b.textContent = codigo() ? '🔑 Meu código' : '🔑 Digitar código do aluno';
     const hero = document.querySelector('.cb-hero');
     let aviso = document.getElementById('cbpAviso');
-    if(hero && !codigo() && !aviso){
+    if(hero && !codigo() && !aviso && codigoDaUrl()){
       aviso = document.createElement('button'); aviso.id = 'cbpAviso'; aviso.className = 'cbp-aviso';
       aviso.innerHTML = '🔑 <b>Recebeu um cartão com código?</b> Toque aqui para digitar.';
       aviso.onclick = () => abrirCodigo();
@@ -116,6 +117,7 @@
   window.cbpAbrirCodigo = abrirCodigo;
   function iniciar(){
     atualizarBotoes();
+    if(codigoDaUrl() && !codigo()) abrirCodigo();
     enviar(false);
     setInterval(() => enviar(false), 30000);
     window.addEventListener('online', () => enviar(false));

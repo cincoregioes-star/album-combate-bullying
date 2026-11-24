@@ -72,16 +72,13 @@ window.SUPABASE_CONFIG = {
   window.addEventListener('online',flush);
   window.addEventListener('load',function(){
     const path=location.pathname.toLowerCase();
-    if(CFG.enabled&&(path.endsWith('/professor.html')||path.endsWith('professor.html'))){
-      carregarScript('professor-ui-v23.js','dxProfessorUiV23');
-      return;
-    }
+    if(path.endsWith('professor.html')||path.endsWith('projetor.html')) return;
     carregarCss('ux-mobile-fix-v20.css','dxUxV20Css');
     carregarCss('student-ui-v22.css','dxStudentV23Css');
     instalarBase();
     carregarScript('simulados-v13.js','dxSimuladosV13');
     carregarScript('jornada-cb.js','cbJornada');
-    carregarScript('painel-cb.js?v=22','cbPainelAluno');
+    carregarScript('painel-cb.js?v=23','cbPainelAluno');
     carregarScript('ux-mobile-fix-v20.js','dxUxV20Js');
     carregarScript('student-ui-v22.js','dxStudentV23Js');
   });

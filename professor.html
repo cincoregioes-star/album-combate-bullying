@@ -76,7 +76,7 @@ details>summary{cursor:pointer;font-weight:700;color:#c7d2fe;margin:6px 0}
 
   <main id="telaPainel" class="oculto">
     <section class="card">
-      <div class="linha" style="justify-content:space-between"><h2 id="tituloVisao">Visão geral</h2><span class="muted peq" id="atualizadoEm"></span></div>
+      <div class="linha" style="justify-content:space-between"><h2 id="tituloVisao">Visão geral</h2><div class="linha"><span class="muted peq" id="atualizadoEm"></span><button class="mini" onclick="Painel.exportarTudo()">⬇ Exportar tudo</button><a class="mini" href="projetor.html" style="background:#24305e;color:#fff;border-radius:9px;padding:6px 10px;text-decoration:none;font-weight:700;font-size:.8rem">📽 Modo Projetor</a></div></div>
       <div class="metricas" id="metricasGerais"></div>
       <div id="resumoEscolas"></div>
       <p class="aviso">🔒 Nenhum nome de aluno é guardado no servidor. A coluna "Nome" fica salva só neste navegador, para você se organizar. Os alunos são identificados pelo código do cartão.</p>
@@ -89,7 +89,8 @@ details>summary{cursor:pointer;font-weight:700;color:#c7d2fe;margin:6px 0}
     <div id="escolas"></div>
   </main>
 </div>
+<script src="qrcode-lib.js"></script>
 <script src="painel-config.js?v=22"></script>
-<script src="painel-app.js?v=22"></script>
+<script src="painel-app.js?v=23"></script>
 </body>
 </html>

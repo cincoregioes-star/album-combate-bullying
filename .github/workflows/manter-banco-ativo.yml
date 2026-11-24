@@ -1,0 +1,27 @@
+name: Manter o banco do painel ativo
+
+# O plano gratuito do Supabase pausa o projeto após 7 dias sem uso.
+# Esta tarefa faz uma consulta leve a cada 3 dias para evitar a pausa.
+on:
+  schedule:
+    - cron: "17 11 */3 * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Consulta leve ao banco
+        run: |
+          for i in 1 2 3; do
+            code=$(curl -s -o /tmp/r.txt -w "%{http_code}" -X POST \
+              "https://kjtoayyyhwhbcuqyxijj.supabase.co/rest/v1/rpc/cbp_aluno_vincular" \
+              -H "apikey: sb_publishable_r8MsMp_RjgIKyTo48ExdSA_OXBLwOPJ" \
+              -H "Content-Type: application/json" \
+              -d '{"p_codigo":"ZZZZZ","p_device":"manter-ativo"}')
+            cat /tmp/r.txt; echo " (HTTP $code)"
+            [ "$code" = "200" ] && exit 0
+            sleep 20
+          done
+          echo "O banco não respondeu. Verifique se o projeto foi pausado no Supabase."
+          exit 1
