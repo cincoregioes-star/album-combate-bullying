@@ -8,7 +8,7 @@ window.ALBUM_INFO = {
   slogan: "Respeito não se compartilha pela metade",
   escola: "Escola Municipal Horizonte Azul",
   autor: "Prof. Carlos André Tavares de Lima",
-  autorDescricao: "Professor de Geografia • Administração Escolar • Criador de Projetos Digitais Educativos",
+  autorDescricao: "Licenciado em Geografia • Especialista em Políticas Públicas e Gestão Pública • Criador de Projetos Digitais Educativos",
   autorEmail: "cincoregioes@gmail.com",
   totalFigurinhas: 36,
   // Link do app Android (gerado automaticamente pelo GitHub a cada atualização)

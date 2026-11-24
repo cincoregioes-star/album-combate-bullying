@@ -6,7 +6,7 @@ A escola que aparece no álbum, **Escola Municipal Horizonte Azul**, é **fictí
 
 ## Créditos
 **Idealização, projeto digital, desenvolvimento do aplicativo e arquitetura da plataforma:** Prof. Carlos André Tavares de Lima
-Professor de Geografia • Administração Escolar • Criador de Projetos Digitais Educativos
+Licenciado em Geografia • Especialista em Políticas Públicas e Gestão Pública • Criador de Projetos Digitais Educativos
 cincoregioes@gmail.com
 
 ## O que tem no álbum

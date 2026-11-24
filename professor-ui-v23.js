@@ -35,7 +35,7 @@
           <article class="dxp23-digital">
             <span>Idealização, projeto digital, desenvolvimento do aplicativo e arquitetura da plataforma</span>
             <strong>Prof. Carlos André Tavares de Lima</strong>
-            <small>Professor de Geografia • Administração Escolar • Criador de Projetos Digitais Educativos</small>
+            <small>Licenciado em Geografia • Especialista em Políticas Públicas e Gestão Pública • Criador de Projetos Digitais Educativos</small>
             <a href="mailto:cincoregioes@gmail.com">cincoregioes@gmail.com</a>
           </article>
         </div>`;
