@@ -59,6 +59,8 @@ const P=(function(){
   const esc=t=>String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const SIM=window.CB_SIMULADOS||[];const PAG=window.PAGINAS||[];const FIG=window.FIGURINHAS||[];
   let sim=null,i=0,revelada=false,pontos=0;
+  const somOk=new Audio('audio/acerto.mp3');
+  function som(){try{const v=parseFloat(localStorage.getItem('cb_volume'));const vol=isNaN(v)?0.5:v;if(vol<=0)return;somOk.currentTime=0;somOk.volume=Math.min(1,0.8*vol);somOk.play().catch(()=>{})}catch(e){}}
   function inicio(){
     sim=null;
     m.innerHTML=`<div class="inicio"><div><h1>Vamos aprender juntos?</h1><p>Escolha um simulado para a turma responder junta, ou mostre as figurinhas do álbum.</p>
@@ -84,7 +86,7 @@ const P=(function(){
       b.insertAdjacentHTML('beforebegin','<button style="background:#166534" onclick="P.acertou(this)">✓ A turma acertou</button>');
     }else proxima();
   }
-  function acertou(b){pontos++;document.getElementById('pts').textContent=pontos;b.remove();}
+  function acertou(b){som();pontos++;document.getElementById('pts').textContent=pontos;b.remove();}
   function proxima(){
     if(i<sim.perguntas.length-1){i++;pergunta();return;}
     m.innerHTML=`<div class="final"><div><p style="font-size:clamp(20px,2vw,36px);color:var(--txt2)">${esc(sim.titulo)}</p><b>${pontos}/${sim.perguntas.length}</b>

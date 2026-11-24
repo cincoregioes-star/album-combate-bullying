@@ -22,8 +22,23 @@ const albumAudio = {
   pack: new Audio("audio/sparkle.mp3"),
   sticker: new Audio("audio/click.mp3"),
   erro: new Audio("audio/erro.mp3"),
-  vitoria: new Audio("audio/vitoria.mp3")
+  vitoria: new Audio("audio/vitoria.mp3"),
+  acerto: new Audio("audio/acerto.mp3"),
+  erroSim: new Audio("audio/erro-simulado.mp3")
 };
+function volumeGeral(){ const v = parseFloat(localStorage.getItem("cb_volume")); return isNaN(v) ? 0.5 : Math.min(1, Math.max(0, v)); }
+function definirVolume(v){
+  localStorage.setItem("cb_volume", String(v));
+  try{ albumAudio.fundo.volume = 0.14 * volumeGeral(); }catch(e){}
+}
+// Sons de acerto e erro dos simulados (iguais aos do Pangeia): tocam mesmo com a música desligada.
+function somResposta(certo){
+  try{
+    const v = volumeGeral(); if(v <= 0) return;
+    const a = certo ? albumAudio.acerto : albumAudio.erroSim;
+    a.currentTime = 0; a.volume = Math.min(1, 0.8 * v); a.play().catch(()=>{});
+  }catch(e){}
+}
 albumAudio.fundo.loop = true;
 let somAtivo = localStorage.getItem("cb_som_album") === "on";
 
@@ -33,20 +48,20 @@ function playAudio(nome, volume=.65){
     const a = albumAudio[nome];
     if(!a) return;
     a.currentTime = 0;
-    a.volume = volume;
+    a.volume = Math.min(1, volume * volumeGeral());
     a.play().catch(()=>{});
   }catch(e){}
 }
 function atualizarBotaoSom(){
   const btn = document.getElementById("btnSomAlbum");
-  if(btn) btn.textContent = somAtivo ? "Som: ON" : "Som: OFF";
+  if(btn) btn.textContent = somAtivo ? "🎵 Música e efeitos: ON" : "🎵 Música e efeitos: OFF";
 }
 function alternarSom(){
   somAtivo = !somAtivo;
   localStorage.setItem("cb_som_album", somAtivo ? "on" : "off");
   atualizarBotaoSom();
   try{
-    if(somAtivo){ albumAudio.fundo.volume = .28; albumAudio.fundo.play().catch(()=>{}); }
+    if(somAtivo){ albumAudio.fundo.volume = 0.14 * volumeGeral(); albumAudio.fundo.play().catch(()=>{}); }
     else albumAudio.fundo.pause();
   }catch(e){}
 }
@@ -409,12 +424,12 @@ function renderPerguntasSimuladoTema(){
   area.innerHTML = `
     <div class="quiz-card quiz-card-unico">
       <h3>${simuladoAtual.titulo}</h3>
-      <p>Marque uma alternativa em cada questão.</p>
+      <p>Marque uma alternativa em cada questão. Depois de marcar, você vê na hora se acertou.</p>
     </div>
     ${simuladoAtual.perguntas.map((q,i)=>`
       <div class="pergunta-box">
         <p><b>${i+1}. ${q[0]}</b></p>
-        ${q[1].map((op,j)=>`<button class="opcao ${respostasSimuladoAtual[i]===j?'selecionada':''}" onclick="marcarRespostaSimuladoTema(${i},${j})">${"ABCD"[j]}) ${op}</button>`).join("")}
+        ${q[1].map((op,j)=>{ const r = respostasSimuladoAtual[i]; const cls = r === undefined ? '' : (j === q[2] ? 'certa' : (r === j ? 'errada' : 'apagada')); return `<button class="opcao ${cls}" ${r !== undefined ? 'disabled' : ''} onclick="marcarRespostaSimuladoTema(${i},${j})">${"ABCD"[j]}) ${op}${r !== undefined && j === q[2] ? ' ✓' : ''}${r === j && j !== q[2] ? ' ✗' : ''}</button>`; }).join("")}
       </div>
     `).join("")}
     <button class="btn btn-finalizar-quiz" onclick="finalizarSimuladoTema()">Finalizar simulado</button>
@@ -422,7 +437,9 @@ function renderPerguntasSimuladoTema(){
 }
 
 function marcarRespostaSimuladoTema(i,j){
+  if(respostasSimuladoAtual[i] !== undefined) return; // resposta fica travada depois de marcada
   respostasSimuladoAtual[i]=j;
+  somResposta(simuladoAtual.perguntas[i][2] === j);
   renderPerguntasSimuladoTema();
 }
 
@@ -740,5 +757,8 @@ window.paginaAnterior = paginaAnterior;
 window.proximaPagina = proximaPagina;
 window.confirmarReinicio = confirmarReinicio;
 window.alternarSom = alternarSom;
+window.definirVolume = definirVolume;
+window.volumeGeral = volumeGeral;
+window.somResposta = somResposta;
 
 window.irInicioAlbum = irInicioAlbum;

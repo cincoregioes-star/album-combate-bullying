@@ -261,9 +261,10 @@ function randomPiece() {
 function createCactus() { return { kind: "cactus", hp: 3 }; }
 function createBlocked() { return { kind: "blocked" }; }
 
+function volumeJogo() { const v = parseFloat(localStorage.getItem('cb_volume')); return isNaN(v) ? 0.5 : Math.min(1, Math.max(0, v)); }
 function play(audio, volume = 1) {
   if (!audioOn || !audio) return;
-  try { audio.pause(); audio.currentTime = 0; audio.volume = volume; audio.play().catch(() => {}); } catch (e) {}
+  try { audio.pause(); audio.currentTime = 0; audio.volume = Math.min(1, volume * volumeJogo()); audio.play().catch(() => {}); } catch (e) {}
 }
 
 function markInteraction() {
@@ -274,7 +275,7 @@ function markInteraction() {
 function toggleAudio() {
   musicaOn = !musicaOn;
   if (musicaOn) {
-    audioFundo.volume = 0.22;
+    audioFundo.volume = 0.12 * volumeJogo();
     audioFundo.play().catch(() => {});
     btnAudio.textContent = "Desligar música";
   } else {
