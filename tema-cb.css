@@ -310,3 +310,7 @@ html body:not(#cb) #tela-simulados .pergunta-box > p:first-child,
 html body:not(#cb) #tela-simulados .pergunta-box > p:first-child b{color:#fcd34d!important;font-size:1.08rem;line-height:1.35}
 html body:not(#cb) .pergunta-box > p:first-child{margin:0 0 12px;padding:0 0 10px;border-bottom:1px solid rgba(252,211,77,.25)}
 html body:not(#cb) button.opcao{color:#e8ecf8!important;font-weight:600}
+
+/* ===== Botão "Finalizar" do tamanho certo ===== */
+html body:not(#cb) .btn-finalizar-quiz,
+html body:not(#cb) #tela-simulados .btn-finalizar-quiz{grid-column:1/-1!important;justify-self:center!important;align-self:start!important;width:auto!important;min-width:240px;max-width:360px;height:auto!important;min-height:0!important;padding:14px 28px!important;margin:10px auto 24px!important;font-size:1.05rem!important;border-radius:14px!important}
