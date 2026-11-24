@@ -213,7 +213,7 @@ html body:not(#cb) #tela-simulados .quiz-card p, html body:not(#cb) #tela-simula
 html body:not(#cb) #tela-simulados .quiz-card p b{color:#fdba74!important}
 
 /* ---------- visibilidade dos atalhos (site x app) ---------- */
-html:not(.cb-no-app) body #cbTilePesquisa{display:none!important}
+html:not(.cb-no-app) body #cbTilePesquisa:not([data-piloto]){display:none!important}
 html.cb-no-app body #cbTileApp{display:none!important}
 
 /* ---------- celular ---------- */
@@ -283,3 +283,5 @@ html body:not(#cb) .cb-prof-barra{height:12px;border-radius:99px;background:rgba
 html body:not(#cb) .cb-prof-barra i{display:block;height:100%;background:linear-gradient(90deg,#f97316,#facc15)}
 html body:not(#cb) .cb-prof-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
 html body:not(#cb) .cb-prof-grid .dx13-stat{margin:0}
+html body:not(#cb) .cb-atalhos{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))!important}
+@media (max-width:600px){html body:not(#cb) .cb-atalhos{grid-template-columns:1fr 1fr!important}html body:not(#cb) .cb-atalhos button:last-child:nth-child(odd){grid-column:1/-1}}
