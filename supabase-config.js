@@ -81,6 +81,7 @@ window.SUPABASE_CONFIG = {
     instalarBase();
     carregarScript('simulados-v13.js','dxSimuladosV13');
     carregarScript('jornada-cb.js','cbJornada');
+    carregarScript('painel-cb.js','cbPainelAluno');
     carregarScript('ux-mobile-fix-v20.js','dxUxV20Js');
     carregarScript('student-ui-v22.js','dxStudentV23Js');
   });

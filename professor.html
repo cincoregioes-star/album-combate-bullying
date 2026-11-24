@@ -1,41 +1,95 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Combate ao Bullying — Painel dos Professores</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    body{background:#07111f;color:#eef6ff;font-family:Arial,sans-serif;margin:0}.prof-wrap{max-width:1180px;margin:auto;padding:24px}.prof-top{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:22px}.prof-top h1{margin:0;font-size:clamp(1.6rem,4vw,2.4rem)}.prof-card{background:#0e1d31;border:1px solid #24415e;border-radius:18px;padding:18px;margin-bottom:18px;box-shadow:0 12px 30px rgba(0,0,0,.22)}.prof-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.metric{background:#112941;border-radius:14px;padding:16px;border:1px solid #2b526f}.metric b{display:block;font-size:1.75rem;margin-top:6px}.login-grid{display:grid;grid-template-columns:1fr 1fr auto;gap:10px}input,select{width:100%;box-sizing:border-box;padding:12px 14px;border-radius:10px;border:1px solid #38546f;background:#081522;color:#fff}button{border:0;border-radius:10px;padding:11px 14px;font-weight:700;cursor:pointer}.btn-primary{background:#22c55e;color:#06220f}.btn-ghost{background:#16314b;color:#fff}.btn-danger{background:#7f1d1d;color:#fff}.table-wrap{overflow:auto}.prof-table{width:100%;border-collapse:collapse;min-width:820px}.prof-table th,.prof-table td{padding:11px;border-bottom:1px solid #29455e;text-align:left;vertical-align:top}.prof-table th{background:#0a1726;position:sticky;top:0}.pill{display:inline-block;padding:4px 8px;border-radius:999px;background:#16314b;font-size:.78rem}.ok{background:#14532d}.warn{background:#78350f}.muted{opacity:.72}.hidden{display:none!important}.filters{display:grid;grid-template-columns:1.2fr 1fr 1fr auto;gap:10px;margin-bottom:14px}.status-v24{border-color:#2f6f52;background:linear-gradient(135deg,#0d2433,#123a31)}.status-v24 b{display:block}.status-v24 span{opacity:.8;font-size:.88rem}.dxp-head,.dxp-cycle{display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap}.dxp-cycle{padding:15px;border:1px solid #31506d;border-radius:14px;background:#0a1726}.dxp-cycle div{display:flex;flex-direction:column;gap:4px}.dxp-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}.dxp-metrics div{padding:14px;border-radius:12px;background:#112941}.dxp-metrics b{font-size:1.6rem;display:block}.dxp-metrics span{font-size:.8rem;opacity:.75}.dxp-row{display:grid;grid-template-columns:1.2fr 1fr 1fr 70px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #29455e}.dxp-row div span{font-size:.75rem}.dxp-row i{height:8px;background:#07111f;border-radius:99px;overflow:hidden;display:block}.dxp-row em{display:block;height:100%;background:#22c55e}.dxp-two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}.dxp-two>div{background:#0a1726;border-radius:14px;padding:14px}.dxp-line{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #29455e}.dxp-two button{margin:5px}.creditos-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.creditos-grid article{display:flex;flex-direction:column;gap:6px;padding:16px;border-radius:14px;background:#0a1726;border:1px solid #29455e}.creditos-grid article>span{font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;opacity:.72}.creditos-grid strong{font-size:1.05rem}.creditos-grid small{line-height:1.45;opacity:.88}.creditos-grid a{color:#86efac;font-weight:700;text-decoration:none}.credito-digital{border-color:#2f6f52!important;background:linear-gradient(145deg,#0a1726,#0d2b25)!important}@media(max-width:800px){.prof-grid,.dxp-metrics{grid-template-columns:1fr 1fr}.login-grid,.filters,.dxp-row,.dxp-two,.creditos-grid{grid-template-columns:1fr}.prof-wrap{padding:14px}}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Painel do Professor — Combate ao Bullying</title>
+<link rel="icon" href="logo-escola.png">
+<style>
+:root{--bg:#0a0f1f;--bg2:#0f1630;--card:#131b36;--card2:#18224a;--borda:rgba(148,163,255,.18);--txt:#e8ecf8;--txt2:#a3aecb;--pri:#6366f1;--sol:#fb923c;--ok:#22c55e;--alerta:#f59e0b;--erro:#f87171}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,var(--bg),var(--bg2)) fixed;color:var(--txt);font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;font-size:15px}
+a{color:#a5b4fc}
+.wrap{max-width:1180px;margin:auto;padding:22px 18px 60px}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.marca{display:flex;align-items:center;gap:12px}.marca img{width:46px;height:46px;border-radius:50%}
+.marca b{display:block;font-size:1.2rem}.marca span{color:var(--txt2);font-size:.85rem}
+.card{background:var(--card);border:1px solid var(--borda);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 14px 40px rgba(0,0,0,.35)}
+h1,h2,h3{margin:0 0 10px}h2{font-size:1.2rem}h3{font-size:1.05rem}
+.muted{color:var(--txt2)}.peq{font-size:.85rem}
+input,select{padding:11px 13px;border-radius:11px;border:1px solid var(--borda);background:#0b1228;color:#fff;font:inherit;min-width:0}
+button{border:0;border-radius:11px;padding:10px 14px;font:inherit;font-weight:700;cursor:pointer;color:#fff;background:#24305e}
+button:hover{filter:brightness(1.15)}button:disabled{opacity:.5;cursor:default}
+.pri{background:linear-gradient(135deg,#6366f1,#8b5cf6)}.sol{background:linear-gradient(135deg,#fb923c,#f43f5e)}.perigo{background:#7f1d1d}.mini{padding:6px 10px;font-size:.8rem;border-radius:9px}
+.linha{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.login{max-width:420px;margin:60px auto}.login form{display:grid;gap:10px}
+.msg{min-height:1.2em;color:var(--erro);font-weight:600}
+.metricas{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
+.metricas div{background:var(--card2);border-radius:14px;padding:12px}.metricas b{display:block;font-size:1.6rem}.metricas span{color:var(--txt2);font-size:.8rem}
+.escola{border-left:4px solid var(--sol)}
+.turma{background:#0e1530;border:1px solid var(--borda);border-radius:14px;padding:14px;margin-top:12px}
+.tabela{width:100%;border-collapse:collapse;margin-top:10px;font-size:.92rem}
+.tabela th,.tabela td{padding:8px 7px;border-bottom:1px solid rgba(148,163,255,.12);text-align:left;vertical-align:middle}
+.tabela th{color:var(--txt2);font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.03em}
+.cod{font-family:ui-monospace,Consolas,monospace;font-weight:800;letter-spacing:.12em;color:#fde68a}
+.barra{display:inline-block;width:90px;height:8px;border-radius:99px;background:#0a0f1f;vertical-align:middle;margin-right:6px;overflow:hidden}.barra i{display:block;height:100%;background:linear-gradient(90deg,#fb923c,#facc15)}
+.pill{display:inline-block;padding:3px 8px;border-radius:99px;font-size:.75rem;font-weight:700}
+.p-ok{background:rgba(34,197,94,.18);color:#86efac}.p-nao{background:rgba(148,163,255,.14);color:var(--txt2)}.p-alerta{background:rgba(245,158,11,.2);color:#fcd34d}
+.nome-local{width:100%;max-width:200px;padding:6px 9px;border-radius:8px;font-size:.88rem}
+.oculto{display:none!important}
+.tabwrap{overflow-x:auto}
+details>summary{cursor:pointer;font-weight:700;color:#c7d2fe;margin:6px 0}
+.aviso{background:rgba(250,204,21,.08);border:1px dashed rgba(250,204,21,.45);border-radius:12px;padding:10px 12px;color:#fde68a;font-size:.88rem}
+@media(max-width:760px){.metricas{grid-template-columns:1fr 1fr}.tabela .esconde-mob{display:none}}
+</style>
 </head>
 <body>
-<main class="prof-wrap">
-  <div class="prof-top"><div><div class="pill">Combate ao Bullying</div><h1>Painel dos Professores</h1><div class="muted">Acompanhamento pedagógico separado do aplicativo dos alunos.</div></div></div>
-  <section class="prof-card status-v24"><b>Painel docente atualizado</b><span>Login por nome de usuário no Supabase • compatível com o aplicativo e o APK dos alunos</span></section>
-  <section id="loginCard" class="prof-card"><h2>Acesso restrito</h2><p class="muted">Digite o nome de usuário e a senha fornecidos pela coordenação. Não é necessário informar e-mail.</p><form id="loginForm" class="login-grid" onsubmit="entrar(event)"><input id="usuario" name="username" type="text" autocomplete="username" placeholder="Nome de usuário" required><input id="senha" name="password" type="password" autocomplete="current-password" placeholder="Senha" required><button class="btn-primary" type="submit">Entrar</button></form><p id="loginMsg" class="muted"></p></section>
-  <section id="painel" class="hidden">
-    <div class="prof-card prof-top"><div><b id="usuarioNome">Professor</b><div id="usuarioPerfil" class="muted"></div></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn-ghost" onclick="carregarTudo()">Atualizar</button><button class="btn-danger" onclick="sair()">Sair</button></div></div>
-    <section id="impactoProjeto" class="prof-card"></section>
-    <div class="prof-grid"><div class="metric">Alunos monitorados<b id="mAlunos">0</b></div><div class="metric">Registros de simulados<b id="mSimulados">0</b></div><div class="metric">Álbuns concluídos<b id="mConcluidos">0</b></div><div class="metric">Média de acertos<b id="mMedia">0,0</b></div></div>
-    <section class="prof-card"><h2>Visão por aluno</h2><div class="filters"><input id="fBusca" placeholder="Buscar aluno" oninput="renderAlunos()"><input id="fTurma" placeholder="Filtrar turma" oninput="renderAlunos()"><select id="fSituacao" onchange="renderAlunos()"><option value="">Todas as situações</option><option value="completo">Álbum completo</option><option value="andamento">Em andamento</option></select><button class="btn-ghost" onclick="exportarCSV()">Exportar CSV</button></div><div class="table-wrap"><table class="prof-table"><thead><tr><th>Aluno</th><th>Turma</th><th>Figurinhas</th><th>Simulados</th><th>Último resultado</th><th>Status</th></tr></thead><tbody id="tbAlunos"></tbody></table></div></section>
-    <section class="prof-card"><h2>Concluintes</h2><div class="table-wrap"><table class="prof-table"><thead><tr><th>Posição</th><th>Aluno</th><th>Escola/Turma</th><th>Código</th><th>Data</th><th>Prêmio</th></tr></thead><tbody id="tbConcluintes"></tbody></table></div></section>
-    <section class="prof-card"><h2>Resultados dos simulados</h2><div class="table-wrap"><table class="prof-table"><thead><tr><th>Aluno</th><th>Turma</th><th>Simulado</th><th>Acertos</th><th>Data</th></tr></thead><tbody id="tbSimulados"></tbody></table></div></section>
+<div class="wrap">
+  <header class="top">
+    <div class="marca"><img src="logo-escola.png" alt=""><div><b>Painel do Professor</b><span>Álbum Combate ao Bullying e ao Cyberbullying</span></div></div>
+    <div id="topoUsuario" class="linha oculto"><span id="quem" class="muted"></span><button class="mini" onclick="Painel.carregar()">↻ Atualizar</button><button class="mini" onclick="Painel.abrirSenha()">Trocar senha</button><button class="mini perigo" onclick="Painel.sair()">Sair</button></div>
+  </header>
+
+  <section id="semConfig" class="card oculto"><h2>Painel ainda não ativado</h2><p class="muted">O álbum está funcionando em modo local. Para ativar o painel, preencha o arquivo <code>painel-config.js</code> com os dados do banco (veja o README).</p><p><a href="index.html">Voltar ao álbum</a></p></section>
+
+  <section id="telaLogin" class="card login oculto">
+    <h2>Entrar</h2>
+    <p class="muted peq">Use o usuário e a senha fornecidos pela Secretaria de Educação.</p>
+    <form onsubmit="Painel.entrar(event)">
+      <input id="lUsuario" autocomplete="username" placeholder="Usuário" required>
+      <input id="lSenha" type="password" autocomplete="current-password" placeholder="Senha" required>
+      <button class="pri" type="submit" id="lBtn">Entrar</button>
+      <div id="lMsg" class="msg"></div>
+    </form>
   </section>
 
-</main>
-<script src="supabase-config.js"></script>
-<script>
-if(window.SUPABASE_CONFIG&&window.SUPABASE_CONFIG.enabled){
-  document.write('<script src="professor-v24.js"><\/script>');
-}else{
-  const alvo=document.querySelector('main')||document.body;
-  alvo.innerHTML=`<section class="prof-card" style="max-width:640px;margin:40px auto;text-align:center">
-    <h2>Painel dos professores</h2>
-    <p>O álbum está em <b>modo livre</b>: funciona por completo e salva o progresso de cada aluno no próprio aparelho.</p>
-    <p>O painel com os resultados da turma (pesquisas, simulados e concluintes) é habilitado quando o álbum for conectado a um banco de dados Supabase. As instruções estão no arquivo README.</p>
-    <p><a href="index.html">Voltar ao álbum</a></p></section>`;
-}
-</script>
+  <section id="telaSenha" class="card login oculto">
+    <h2>Trocar senha</h2>
+    <form onsubmit="Painel.trocarSenha(event)">
+      <input id="sAtual" type="password" autocomplete="current-password" placeholder="Senha atual" required>
+      <input id="sNova" type="password" autocomplete="new-password" placeholder="Nova senha (mín. 8 caracteres)" required minlength="8">
+      <div class="linha"><button class="pri" type="submit">Salvar</button><button type="button" onclick="Painel.mostrar('painel')">Cancelar</button></div>
+      <div id="sMsg" class="msg"></div>
+    </form>
+  </section>
+
+  <main id="telaPainel" class="oculto">
+    <section class="card">
+      <div class="linha" style="justify-content:space-between"><h2 id="tituloVisao">Visão geral</h2><span class="muted peq" id="atualizadoEm"></span></div>
+      <div class="metricas" id="metricasGerais"></div>
+      <div id="resumoEscolas"></div>
+      <p class="aviso">🔒 Nenhum nome de aluno é guardado no servidor. A coluna "Nome" fica salva só neste navegador, para você se organizar. Os alunos são identificados pelo código do cartão.</p>
+    </section>
+    <section id="areaSecretaria" class="card oculto">
+      <h2>Cadastrar escola</h2>
+      <div class="linha"><input id="novaEscola" placeholder="Nome da escola" style="flex:1;min-width:220px"><button class="pri" onclick="Painel.criarEscola()">Cadastrar</button></div>
+      <div id="msgEscola" class="msg"></div>
+    </section>
+    <div id="escolas"></div>
+  </main>
+</div>
+<script src="painel-config.js"></script>
+<script src="painel-app.js"></script>
 </body>
 </html>

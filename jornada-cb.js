@@ -227,6 +227,7 @@
     if(relogioProf)clearInterval(relogioProf);tick();relogioProf=setInterval(tick,1000);
   }
   window.cbMostrarProfessor=abrirProgressoProfessor;
+  window.cbProgresso=function(){let pac=0;try{pac=estado.pacotes||0}catch(e){}return {figurinhas:coladas(),simulados:simuladosDistintos(),pacotes:pac}};
 
   function abrirMissoes(){
     const sims=simuladosDistintos(), faltam=36-coladas();
