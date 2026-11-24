@@ -21,7 +21,8 @@
 
   <button id="dxGameBack" onclick="window.location.href='../index.html'">← Voltar ao álbum</button>
 
-  <div class="pagina">
+  <!-- TELA 1: explicação da fase -->
+  <div class="pagina" id="telaIntro">
     <header class="topbar">
       <div>
         <h1>Game Combate ao Bullying</h1>
@@ -33,102 +34,105 @@
       </div>
     </header>
 
-    <main class="layout">
-      <aside class="painel painel-esquerdo">
-        <div class="placa">
-          <span class="placa-titulo">FASE</span>
-          <strong id="faseAtual">1</strong>
+    <main class="intro-grade">
+      <section class="intro-card intro-fase">
+        <span class="intro-etiqueta">Fase <b id="faseAtual">1</b></span>
+        <h2 id="tituloFase">Fase 1</h2>
+        <p id="subtituloFase">Troque peças por clique ou arrastando um bloco por vez.</p>
+        <div class="painel-preparo">
+          <h3>Tema da fase</h3>
+          <p id="temaFase">Cada fase tem layout, fundo e dificuldade próprios.</p>
         </div>
+        <button id="btnIniciarFase" class="btn btn-primary btn-iniciar">▶ Iniciar fase</button>
+      </section>
 
-        <div class="card-info">
-          <div class="linha-info"><span>Pontos</span><strong id="pontos">0</strong></div>
-          <div class="linha-info"><span>Jogadas</span><strong id="movimentos">0</strong></div>
-          <div class="linha-info"><span>Figurinha</span><strong id="figurinhaNumero">001</strong></div>
-        </div>
-
+      <section class="intro-card">
+        <h3>Objetivos da fase</h3>
         <div class="objetivos">
-          <h2>Objetivos</h2>
           <div class="objetivo-item"><span>Meta de pontos</span><strong id="metaPontos">0 / 0</strong></div>
           <div class="objetivo-item"><span>Cactos quebrados</span><strong id="metaCactos">0 / 0</strong></div>
           <div class="objetivo-item"><span>Figurinha desvendada</span><strong id="metaFigurinha">0 / 0</strong></div>
           <div class="barra"><div id="progresso" class="progresso"></div></div>
           <small id="descricaoFase">Conclua os 3 objetivos para passar de fase.</small>
         </div>
-
-        <div class="painel-preparo">
-          <h2>Tema da fase</h2>
-          <p id="temaFase">Cada fase agora tem layout próprio, fundo próprio e dificuldade própria.</p>
-        </div>
-      </aside>
-
-      <section class="centro">
-        <div class="tabuleiro-topo">
-          <h2 id="tituloFase">Fase 1</h2>
-          <p id="subtituloFase">Troque peças por clique ou arrastando um bloco por vez.</p>
-        </div>
-
-        <div id="statusBooster" class="status-booster">Nenhum booster ativo.</div>
-
-        <div class="tabuleiro-wrap">
-          <div id="tabuleiro" class="tabuleiro"></div>
-        </div>
-
-        <div class="acoes-centro">
-          <button id="btnEmbaralhar" class="btn">Embaralhar</button>
-          <button id="btnProximaFase" class="btn btn-primary" disabled>Próxima fase</button>
-        </div>
+        <h3>Como jogar</h3>
+        <ul class="intro-lista">
+          <li>Troque duas peças vizinhas (clique ou arraste) para formar 3 ou mais iguais.</li>
+          <li>4 peças iguais criam um <b>foguete</b>; 5 peças criam uma <b>bomba</b>.</li>
+          <li>Cactos precisam de <b>3 acertos</b> ao lado deles.</li>
+          <li>Cada combinação revela um pedaço da <b>figurinha</b>. Ao vencer, ela vai para o seu álbum.</li>
+        </ul>
       </section>
 
-      <aside class="painel painel-direito">
-        <div class="figurinha-box">
-          <div class="figurinha-head">
-            <h2>Figurinha sendo desvendada</h2>
-            <span id="figurinhaArquivo" class="etiqueta-arquivo">Figurinha do álbum</span>
-          </div>
-          <div id="stickerPreview" class="sticker-preview sem-imagem">
-            <img id="stickerImage" alt="Figurinha" />
-            <div id="stickerFallback" class="sticker-fallback">
-              <div class="fallback-numero" id="fallbackNumero">001</div>
-              <div class="fallback-texto">FIGURINHA</div>
-            </div>
-            <div id="stickerMask" class="sticker-mask"></div>
-          </div>
-          <div class="figurinha-stats">
-            <span id="coberturaRestante">0 blocos cobrindo</span>
-            <span id="porcentagemVisivel">0% visível</span>
-          </div>
-        </div>
-
-        <h2>Boosters</h2>
-        <button id="boosterBomba" class="booster-btn">
-          <span class="booster-icone">💣</span>
-          <span class="booster-texto"><strong>Bomba</strong><small>Queima pavio e quebra área 3x3</small></span>
-          <span id="qtdBomba" class="booster-qtd">3</span>
-        </button>
-
-        <button id="boosterFoguete" class="booster-btn">
-          <span class="booster-icone">🚀</span>
-          <span class="booster-texto"><strong>Foguete</strong><small>Quebra uma linha horizontal</small></span>
-          <span id="qtdFoguete" class="booster-qtd">3</span>
-        </button>
-
-        <button id="boosterPa" class="booster-btn">
-          <span class="booster-icone">🪏</span>
-          <span class="booster-texto"><strong>Pá</strong><small>Quebra 1 bloco</small></span>
-          <span id="qtdPa" class="booster-qtd">3</span>
-        </button>
-
-        <div class="ajuda">
-          <h3>Regras</h3>
-          <ul>
-            <li>4 peças: cria <b>foguete horizontal</b>.</li>
-            <li>5 peças: cria <b>bomba</b>.</li>
-            <li>Cactos precisam de <b>3 acertos</b>.</li>
-            <li>Cada fase tem <b>layout e fundo diferentes</b>.</li>
-          </ul>
-        </div>
-      </aside>
+      <section class="intro-card">
+        <h3>Boosters</h3>
+        <ul class="intro-lista intro-boosters">
+          <li><span>💣</span><b>Bomba</b> — quebra uma área 3x3.</li>
+          <li><span>🚀</span><b>Foguete</b> — quebra uma linha inteira.</li>
+          <li><span>🪏</span><b>Pá</b> — quebra um bloco.</li>
+        </ul>
+        <p class="intro-dica">Na tela do jogo, toque no booster e depois na peça do tabuleiro.</p>
+      </section>
     </main>
+  </div>
+
+  <!-- TELA 2: jogo em tela cheia -->
+  <div id="telaJogo" class="tela-jogo escondida">
+    <aside class="jogo-esq">
+      <div class="jogo-titulo"><b>Fase <span id="jogoFaseNum">1</span></b> <span id="jogoFaseNome"></span></div>
+      <div class="figurinha-box">
+        <div class="figurinha-head">
+          <h2>Figurinha sendo revelada</h2>
+          <span id="figurinhaArquivo" class="etiqueta-arquivo">Figurinha do álbum</span>
+        </div>
+        <div id="stickerPreview" class="sticker-preview sem-imagem">
+          <img id="stickerImage" alt="Figurinha" />
+          <div id="stickerFallback" class="sticker-fallback">
+            <div class="fallback-numero" id="fallbackNumero">001</div>
+            <div class="fallback-texto">FIGURINHA</div>
+          </div>
+          <div id="stickerMask" class="sticker-mask"></div>
+        </div>
+        <div class="figurinha-stats">
+          <span id="coberturaRestante">0 blocos cobrindo</span>
+          <span id="porcentagemVisivel">0% visível</span>
+        </div>
+      </div>
+    </aside>
+
+    <section class="jogo-centro">
+      <div id="tabuleiro" class="tabuleiro"></div>
+    </section>
+
+    <aside class="jogo-dir">
+      <div class="card-info">
+        <div class="linha-info"><span>Pontos</span><strong id="pontos">0</strong></div>
+        <div class="linha-info"><span>Jogadas</span><strong id="movimentos">0</strong></div>
+        <div class="linha-info"><span>Figurinha</span><strong id="figurinhaNumero">001</strong></div>
+      </div>
+      <div id="statusBooster" class="status-booster">Nenhum booster ativo.</div>
+      <button id="boosterBomba" class="booster-btn">
+        <span class="booster-icone">💣</span>
+        <span class="booster-texto"><strong>Bomba</strong><small>Área 3x3</small></span>
+        <span id="qtdBomba" class="booster-qtd">3</span>
+      </button>
+      <button id="boosterFoguete" class="booster-btn">
+        <span class="booster-icone">🚀</span>
+        <span class="booster-texto"><strong>Foguete</strong><small>Linha inteira</small></span>
+        <span id="qtdFoguete" class="booster-qtd">3</span>
+      </button>
+      <button id="boosterPa" class="booster-btn">
+        <span class="booster-icone">🪏</span>
+        <span class="booster-texto"><strong>Pá</strong><small>1 bloco</small></span>
+        <span id="qtdPa" class="booster-qtd">3</span>
+      </button>
+      <div class="jogo-acoes">
+        <button id="btnEmbaralhar" class="btn">Embaralhar</button>
+        <button id="btnProximaFase" class="btn btn-primary" disabled>Próxima fase</button>
+        <button id="btnVerExplicacao" class="btn btn-dark">ⓘ Explicação da fase</button>
+        <button id="btnSairJogo" class="btn btn-dark">← Voltar ao álbum</button>
+      </div>
+    </aside>
   </div>
 
   <div id="modal" class="modal escondido">
@@ -147,27 +151,27 @@
   <script src="script.js"></script>
   <script src="game-v13.js"></script>
 <script>
-/* Computador: o tabuleiro diminui para caber na altura da tela; o resto ocupa a largura toda. */
+/* Duas telas: explicação da fase e jogo em tela cheia */
 (function(){
-  function ajustar(){
-    var pg=document.querySelector('.pagina'), tab=document.getElementById('tabuleiro'), centro=document.querySelector('.centro'); if(!pg||!tab||!centro) return;
-    var paineis=document.querySelectorAll('.layout > .painel');
-    pg.style.zoom='';
-    tab.style.removeProperty('width'); tab.style.removeProperty('height');
-    paineis.forEach(function(p){p.style.removeProperty('max-height');});
-    document.body.classList.toggle('cb-desktop', window.innerWidth>=1101);
-    if(window.innerWidth<1101) return;
-    paineis.forEach(function(p){p.style.setProperty('max-height','120px','important');});
-    var topo=tab.getBoundingClientRect().top+window.scrollY;
-    var abaixo=centro.getBoundingClientRect().bottom-tab.getBoundingClientRect().bottom;
-    var lado=Math.floor(window.innerHeight-topo-abaixo-50);
-    lado=Math.max(260,Math.min(640,lado));
-    tab.style.setProperty('width',lado+'px','important'); tab.style.setProperty('height',lado+'px','important');
-    var h=centro.offsetHeight;
-    paineis.forEach(function(p){p.style.setProperty('max-height',h+'px','important');});
+  var intro=document.getElementById('telaIntro'), jogo=document.getElementById('telaJogo'), voltar=document.getElementById('dxGameBack');
+  function mostrarJogo(){
+    intro.classList.add('escondida'); jogo.classList.remove('escondida'); if(voltar) voltar.classList.add('escondida');
+    document.body.classList.add('modo-jogo');
+    try{ if(!document.fullscreenElement && document.documentElement.requestFullscreen && window.innerWidth>900) document.documentElement.requestFullscreen().catch(function(){}); }catch(e){}
   }
-  window.addEventListener('load',function(){ajustar();setTimeout(ajustar,600);setTimeout(ajustar,1800);});
-  window.addEventListener('resize',function(){clearTimeout(window.__cbz);window.__cbz=setTimeout(ajustar,150);});
+  function mostrarIntro(){
+    jogo.classList.add('escondida'); intro.classList.remove('escondida'); if(voltar) voltar.classList.remove('escondida');
+    document.body.classList.remove('modo-jogo'); window.scrollTo(0,0);
+  }
+  document.getElementById('btnIniciarFase').addEventListener('click',mostrarJogo);
+  document.getElementById('btnVerExplicacao').addEventListener('click',mostrarIntro);
+  document.getElementById('btnSairJogo').addEventListener('click',function(){ try{ if(document.fullscreenElement) document.exitFullscreen(); }catch(e){} window.location.href='../index.html'; });
+  // título da fase também na tela do jogo
+  function copiarTitulo(){ document.getElementById('jogoFaseNum').textContent=document.getElementById('faseAtual').textContent; document.getElementById('jogoFaseNome').textContent=(document.getElementById('tituloFase').textContent||'').replace(/^Fase\s*\d+\s*[—-]\s*/,''); }
+  var ultimaFase=null;
+  new MutationObserver(function(){ copiarTitulo(); var f=document.getElementById('faseAtual').textContent; if(ultimaFase!==null && f!==ultimaFase) mostrarIntro(); ultimaFase=f; }).observe(document.getElementById('faseAtual'),{childList:true,characterData:true,subtree:true});
+  new MutationObserver(copiarTitulo).observe(document.getElementById('tituloFase'),{childList:true,characterData:true,subtree:true});
+  window.addEventListener('load',function(){ copiarTitulo(); ultimaFase=document.getElementById('faseAtual').textContent; });
 })();
 </script>
 </body>

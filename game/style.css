@@ -678,17 +678,48 @@ body:not(#cb) .topbar .btn{background:linear-gradient(135deg,#6366f1,#8b5cf6)!im
 body:not(#cb) #dxGameBack{background:rgba(10,15,31,.85)!important; color:#c7d2fe!important; border:1px solid rgba(148,163,255,.3)!important; box-shadow:0 6px 18px rgba(0,0,0,.35)!important}
 
 
-/* ===== Computador: largura total, tabuleiro proporcional à altura ===== */
-body.cb-desktop .pagina{width:98%!important;max-width:none!important;padding-top:8px!important;padding-bottom:8px!important}
-body.cb-desktop #dxGameBack{position:fixed!important;top:12px!important;left:14px!important;z-index:1000!important}
-body.cb-desktop .topbar{padding:10px 18px 10px 190px!important;margin-bottom:10px!important}
-body.cb-desktop .topbar h1{font-size:26px!important}
-body.cb-desktop .layout{grid-template-columns:minmax(250px,1fr) auto minmax(290px,1fr)!important;gap:14px!important;align-items:start!important}
-body.cb-desktop .painel{overflow-y:auto!important;overflow-x:hidden!important}
-body.cb-desktop .tabuleiro{transform:none!important;max-width:none!important;max-height:none!important}
-body.cb-desktop .centro{min-width:0}
-body.cb-desktop .sticker-preview{max-width:300px!important}
-.peca{border-radius:22%!important}
-.forma-triangulo{width:62%!important;height:56%!important;border:0!important;background:linear-gradient(180deg,#fff7a8,#ff9f00)!important;clip-path:polygon(50% 0,100% 100%,0 100%);filter:none!important}
-body.cb-desktop{padding-bottom:0!important;min-height:0!important}
-html:has(body.cb-desktop){min-height:0!important}
+/* ===== Tela 1 (explicação) e Tela 2 (jogo em tela cheia) ===== */
+.escondida{display:none!important}
+.intro-grade{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:16px;align-items:stretch}
+.intro-card{background:rgba(10,15,40,.55);border:1px solid rgba(255,255,255,.16);border-radius:20px;padding:20px;color:#fff;box-shadow:0 12px 28px rgba(0,0,0,.28)}
+.intro-card h2{font-size:28px;margin:6px 0 6px;color:#fde68a}
+.intro-card h3{margin:4px 0 10px;color:#fde68a}
+.intro-etiqueta{display:inline-block;background:linear-gradient(135deg,#22d3ee,#0284c7);border-radius:999px;padding:5px 14px;font-weight:800;font-size:14px}
+.intro-lista{margin:0 0 12px;padding-left:20px;line-height:1.5}
+.intro-boosters{list-style:none;padding:0}.intro-boosters li{display:flex;gap:10px;align-items:center;margin-bottom:10px}.intro-boosters span{font-size:26px}
+.intro-dica{opacity:.85;font-size:14px}
+.intro-fase .painel-preparo{margin:14px 0 18px}
+.btn-iniciar{font-size:22px!important;padding:16px 30px!important;width:100%;border-radius:18px!important}
+@media(max-width:1000px){.intro-grade{grid-template-columns:1fr}}
+
+body.modo-jogo{overflow:hidden!important;padding:0!important;min-height:0!important}
+.tela-jogo{position:fixed;inset:0;display:grid;grid-template-columns:minmax(220px,1fr) auto minmax(230px,1fr);gap:16px;padding:14px 18px;align-items:center;z-index:5}
+.tela-jogo aside{height:calc(100vh - 28px);display:flex;flex-direction:column;gap:10px;min-width:0;overflow:hidden}
+.jogo-esq{justify-content:flex-start}
+.jogo-titulo{background:rgba(10,15,40,.6);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:8px 12px;color:#fde68a;font-weight:800;font-size:16px}
+.jogo-titulo span{color:#fff;font-weight:700}
+.tela-jogo .figurinha-box{flex:1;min-height:0;display:flex;flex-direction:column;background:rgba(10,15,40,.5);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:12px}
+.tela-jogo .figurinha-head h2{font-size:17px;margin:0}
+body .tela-jogo .sticker-preview{flex:1;min-height:0;height:auto!important;width:auto!important;max-width:100%!important;aspect-ratio:768/1376!important;margin:10px auto 6px!important}
+.tela-jogo .figurinha-stats{display:flex;justify-content:space-between;font-size:13px;color:#e5e7eb}
+.jogo-centro{display:flex;align-items:center;justify-content:center;height:calc(100vh - 28px)}
+body .tela-jogo #tabuleiro.tabuleiro{width:min(calc(100vh - 40px),calc(100vw - 560px))!important;height:min(calc(100vh - 40px),calc(100vw - 560px))!important;max-width:none!important;max-height:none!important;transform:none!important;margin:0!important}
+.jogo-dir{justify-content:flex-start}
+.jogo-dir .card-info{background:rgba(10,15,40,.5);border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:6px 14px}
+.jogo-dir .linha-info{display:flex;justify-content:space-between;padding:6px 0;color:#fff}.jogo-dir .linha-info strong{color:#fde68a;font-size:20px}
+.jogo-dir .status-booster{margin:0!important;text-align:center}
+.jogo-dir .booster-btn{margin:0!important;padding:10px!important}
+.jogo-acoes{margin-top:auto;display:grid;gap:8px}
+.jogo-acoes .btn{width:100%;padding:11px!important}
+.forma-triangulo{width:62%!important;height:56%!important;border:0!important;background:linear-gradient(180deg,#fff7a8,#ffb300)!important;clip-path:polygon(50% 0,100% 100%,0 100%)}
+
+@media(max-width:900px){
+  body.modo-jogo{overflow:auto!important}
+  .tela-jogo{position:static;grid-template-columns:1fr;padding:10px}
+  .tela-jogo aside{height:auto;overflow:visible}
+  .jogo-centro{height:auto;order:-1}
+  body .tela-jogo #tabuleiro.tabuleiro{width:min(94vw,calc(100vh - 160px))!important;height:min(94vw,calc(100vh - 160px))!important}
+  body .tela-jogo .sticker-preview{height:260px!important;flex:none}
+  .jogo-esq{order:2}
+}
+body.modo-jogo #dxGameBack,html body.modo-jogo #dxGameBack{display:none!important}
