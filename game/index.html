@@ -146,5 +146,23 @@
   <script src="figurinhas/figurinhas-config.js"></script>
   <script src="script.js"></script>
   <script src="game-v13.js"></script>
+<script>
+/* Ajusta o game para caber na altura da tela do computador, sem rolar. */
+(function(){
+  function ajustar(){
+    var pg=document.querySelector('.pagina'), top=document.querySelector('.topbar'), centro=document.querySelector('.centro'); if(!pg||!top||!centro) return;
+    var paineis=document.querySelectorAll('.layout > .painel');
+    pg.style.zoom=''; paineis.forEach(function(p){p.style.removeProperty('max-height');p.style.removeProperty('overflow-y');});
+    if(window.innerWidth<1101) return;
+    paineis.forEach(function(p){p.style.setProperty('max-height','120px','important');p.style.setProperty('overflow-y','auto','important');});
+    var h=centro.offsetHeight;
+    paineis.forEach(function(p){p.style.setProperty('max-height',h+'px','important');});
+    var util=pg.getBoundingClientRect().top+window.scrollY+pg.scrollHeight+80, z=Math.min(1, window.innerHeight/util);
+    z=Math.max(0.55,z); if(z<0.99){ pg.style.zoom=z.toFixed(3); document.body.style.paddingBottom='0'; }
+  }
+  window.addEventListener('load',function(){ajustar();setTimeout(ajustar,600);setTimeout(ajustar,1800);});
+  window.addEventListener('resize',function(){clearTimeout(window.__cbz);window.__cbz=setTimeout(ajustar,150);});
+})();
+</script>
 </body>
 </html>
