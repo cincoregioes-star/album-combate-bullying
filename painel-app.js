@@ -5,7 +5,26 @@ const Painel = (function(){
   const CFG = window.CB_PAINEL || {};
   const K_SESSAO = 'cbp_sessao_painel';
   const K_NOMES = 'cbp_nomes_locais_v1';
-  let sessao = null, dados = null;
+  let sessao = null, dados = null, pesquisas = {}, lancando = null;
+  const PERGUNTAS = ['Diferenciar bullying de brincadeira','Identificar cyberbullying','Saber como agir','Empatia antes de postar','Conhecer leis e canais de ajuda',
+    'Presenciou humilhação na escola*','Viu exposição nas redes*','Participou de algo que machucou*','Sentiu-se alvo*','Procuraria um adulto',
+    'Álbum ajudou a compreender','Simulados ajudaram','Game ajudou a aprender','Missões e desafio ajudaram','Mudou a percepção do tema'];
+  function indexarPesquisas(lista){ const m = {}; (lista || []).forEach(r => { (m[r.turma] = m[r.turma] || {})[r.tipo] = r; }); return m; }
+  function somarPesquisas(turmaIds, tipo){
+    const n = tipo === 'inicial' ? 10 : 15, pos = Array(n).fill(0), resp = Array(n).fill(0); let folhas = 0;
+    turmaIds.forEach(id => { const r = (pesquisas[id] || {})[tipo]; if(!r) return; folhas += r.folhas; r.positivas.forEach((v, i) => pos[i] += v); r.respondidas.forEach((v, i) => resp[i] += v); });
+    return { folhas, pct: pos.map((v, i) => resp[i] ? v / resp[i] : null) };
+  }
+  function tabelaPesquisas(turmaIds, classe){
+    const a = somarPesquisas(turmaIds, 'inicial'), b = somarPesquisas(turmaIds, 'final');
+    if(!a.folhas && !b.folhas) return '<p class="muted peq">Nenhuma folha lançada ainda.</p>';
+    const f = v => v == null ? '—' : Math.round(v * 100) + '%';
+    const d = (x, y) => (x == null || y == null) ? '—' : ((y - x) >= 0 ? '+' : '') + Math.round((y - x) * 100) + ' p.p.';
+    return `<p class="peq muted">Folhas lançadas: inicial ${a.folhas} · final ${b.folhas}. Percentual de quem marcou 3 ou 4 (concordo / algumas ou muitas vezes). *Nas perguntas 6 a 9, quanto menor, melhor.</p>
+      <div class="tabwrap"><table class="${classe || 'tabela'}"><thead><tr><th>Nº</th><th>O que mede</th><th>Inicial</th><th>Final</th><th>Variação</th></tr></thead><tbody>
+      ${PERGUNTAS.map((q, i) => `<tr><td>${i + 1}</td><td>${q}</td><td>${i < 10 ? f(a.pct[i]) : '—'}</td><td>${f(b.pct[i])}</td><td>${i < 10 ? d(a.pct[i], b.pct[i]) : '—'}</td></tr>`).join('')}
+      </tbody></table></div>`;
+  }
 
   const $ = id => document.getElementById(id);
   const esc = t => String(t == null ? '' : t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -65,6 +84,7 @@ const Painel = (function(){
   async function carregar(){
     try{
       dados = await rpc('cbp_painel', { p_token: sessao.token });
+      try{ pesquisas = indexarPesquisas(await rpc('cbp_pesquisas_resumo', { p_token: sessao.token })); }catch(e){ pesquisas = {}; }
       $('quem').textContent = `${dados.nome} · ${dados.perfil === 'secretaria' ? 'Secretaria (todas as escolas)' : 'Escola'}`;
       render(); mostrar('painel');
     }catch(e){ alert(e.message); }
@@ -101,6 +121,8 @@ const Painel = (function(){
     $('tituloVisao').textContent = sec ? 'Visão da rede' : (dados.escolas[0] ? dados.escolas[0].nome : 'Minha escola');
     $('metricasGerais').innerHTML = blocoMetricas(metricas(todos));
     $('atualizadoEm').textContent = 'Atualizado às ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    const todasTurmas = dados.escolas.flatMap(e => e.turmas.map(t => t.id));
+    $('resultadoGeral').innerHTML = tabelaPesquisas(todasTurmas);
     $('resumoEscolas').innerHTML = sec && dados.escolas.length ? `<div class="tabwrap"><table class="tabela"><thead><tr><th>Escola</th><th>Turmas</th><th>Alunos</th><th>Ativados</th><th>Média figurinhas</th><th>Completos</th></tr></thead><tbody>${
       dados.escolas.map(e => { const m = metricas(e.turmas.flatMap(t => t.alunos)); return `<tr><td>${esc(e.nome)}</td><td>${e.turmas.length}</td><td>${m.total}</td><td>${m.ativos}</td><td>${m.media.toFixed(1).replace('.', ',')}</td><td>${m.completos}</td></tr>`; }).join('')
     }</tbody></table></div>` : '';
@@ -121,7 +143,7 @@ const Painel = (function(){
           return `<div class="turma">
             <div class="linha" style="justify-content:space-between">
               <h3>${esc(t.nome)} <span class="muted peq">· ${m.ativos}/${m.total} ativados · média ${m.media.toFixed(1).replace('.', ',')} figurinhas</span></h3>
-              <div class="linha"><button class="mini sol" onclick="Painel.cartoes('${e.id}','${t.id}')">🖨 Imprimir cartões</button><button class="mini" onclick="Painel.csv('${e.id}','${t.id}')">Baixar planilha</button><button class="mini" onclick="Painel.certificados('${e.id}','${t.id}')">🏅 Certificados</button><button class="mini" onclick="Painel.addAluno('${t.id}')">+ Aluno</button><button class="mini perigo" onclick="Painel.excluirTurma('${t.id}','${esc(t.nome)}')">Excluir turma</button></div>
+              <div class="linha"><button class="mini sol" onclick="Painel.cartoes('${e.id}','${t.id}')">🖨 Imprimir cartões</button><button class="mini" onclick="Painel.csv('${e.id}','${t.id}')">Baixar planilha</button><button class="mini" onclick="Painel.certificados('${e.id}','${t.id}')">🏅 Certificados</button><button class="mini pri" onclick="Painel.abrirLancamento('${t.id}')">📝 Lançar pesquisas</button><button class="mini" onclick="Painel.addAluno('${t.id}')">+ Aluno</button><button class="mini perigo" onclick="Painel.excluirTurma('${t.id}','${esc(t.nome)}')">Excluir turma</button></div>
             </div>
             <div class="tabwrap"><table class="tabela"><thead><tr><th>Nº</th><th>Nome (só neste navegador)</th><th>Código</th><th>Situação</th><th>Figurinhas</th><th class="esconde-mob">Simulados</th><th class="esconde-mob">Último uso</th><th></th></tr></thead><tbody>
             ${t.alunos.map(a => `<tr>
@@ -134,7 +156,9 @@ const Painel = (function(){
               <td class="esconde-mob">${quando(a.ultimo_uso)}</td>
               <td class="linha">${a.vinculado || a.alerta_aparelho ? `<button class="mini" title="Use quando o aluno trocar de celular" onclick="Painel.liberar('${a.id}', false)">Liberar celular</button>` : ''}<button class="mini" title="Gera um código novo (cartão perdido)" onclick="Painel.liberar('${a.id}', true)">Novo código</button></td>
             </tr>`).join('')}
-            </tbody></table></div></div>`;
+            </tbody></table></div>
+            ${lancando === t.id ? blocoLancamento(t) : ''}
+            <details><summary>📊 Resultado das pesquisas desta turma</summary>${tabelaPesquisas([t.id])}</details></div>`;
         }).join('')}
       </section>`).join('') || '<section class="card"><p class="muted">Nenhuma escola cadastrada ainda.</p></section>';
   }
@@ -201,6 +225,48 @@ const Painel = (function(){
   }
 
 
+
+  // ---------- lançamento das pesquisas em papel ----------
+  let tipoLanc = 'inicial', ultimoLanc = [];
+  function blocoLancamento(t){
+    const r = pesquisas[t.id] || {};
+    const n = tipoLanc === 'inicial' ? 10 : 15;
+    return `<div class="lanc">
+      <div class="linha" style="justify-content:space-between"><h3>📝 Lançar folhas — ${esc(t.nome)}</h3><button class="mini" onclick="Painel.abrirLancamento(null)">Fechar</button></div>
+      <div class="linha"><label><input type="radio" name="tipoLanc" ${tipoLanc === 'inicial' ? 'checked' : ''} onchange="Painel.tipoLanc('inicial','${t.id}')"> Pesquisa inicial (10)</label>
+        <label><input type="radio" name="tipoLanc" ${tipoLanc === 'final' ? 'checked' : ''} onchange="Painel.tipoLanc('final','${t.id}')"> Pesquisa final (15)</label>
+        <span class="muted peq">Lançadas: inicial <b>${(r.inicial || {}).folhas || 0}</b> · final <b>${(r.final || {}).folhas || 0}</b></span></div>
+      <p class="peq muted">Para cada folha, digite as marcações em ordem: <b>1</b> = Discordo totalmente/Nunca · <b>2</b> = Discordo/Raramente · <b>3</b> = Concordo/Algumas vezes · <b>4</b> = Concordo totalmente/Muitas vezes · <b>0</b> = em branco. Ao completar ${n} números, a folha é salva sozinha.</p>
+      <input id="lancCampo" class="lanc-campo" inputmode="numeric" maxlength="${n}" placeholder="${'3'.repeat(n)}" oninput="Painel.digitarLanc(this,'${t.id}')" autocomplete="off">
+      <div id="lancMsg" class="peq"></div>
+      ${ultimoLanc.length ? `<button class="mini" onclick="Painel.desfazerLanc('${t.id}')">↶ Desfazer a última folha</button>` : ''}
+    </div>`;
+  }
+  function abrirLancamento(t){ lancando = t; ultimoLanc = []; render(); setTimeout(() => { const c = $('lancCampo'); if(c) c.focus(); }, 50); }
+  function trocarTipo(tp, t){ tipoLanc = tp; render(); setTimeout(() => { const c = $('lancCampo'); if(c) c.focus(); }, 50); }
+  let salvandoLanc = false;
+  async function digitarLanc(campo, t){
+    campo.value = campo.value.replace(/[^0-4]/g, '');
+    const n = tipoLanc === 'inicial' ? 10 : 15;
+    if(campo.value.length < n || salvandoLanc) return;
+    salvandoLanc = true;
+    const resp = campo.value.split('').map(Number);
+    try{
+      const r = await rpc('cbp_lancar_pesquisa', { p_token: sessao.token, p_turma: t, p_tipo: tipoLanc, p_respostas: resp });
+      if(!r.ok){ $('lancMsg').textContent = r.erro; salvandoLanc = false; return; }
+      ultimoLanc.push(r.id);
+      pesquisas = indexarPesquisas(await rpc('cbp_pesquisas_resumo', { p_token: sessao.token }));
+      render();
+      const c = $('lancCampo'); if(c){ c.focus(); }
+      const m = $('lancMsg'); if(m){ m.textContent = `✅ Folha salva (${resp.join(' ')}). Total desta pesquisa: ${r.total}.`; m.style.color = '#86efac'; }
+    }catch(e){ const m = $('lancMsg'); if(m) m.textContent = e.message; }
+    salvandoLanc = false;
+  }
+  async function desfazerLanc(t){
+    const id = ultimoLanc.pop(); if(!id) return;
+    try{ await rpc('cbp_excluir_pesquisa', { p_token: sessao.token, p_id: id }); pesquisas = indexarPesquisas(await rpc('cbp_pesquisas_resumo', { p_token: sessao.token })); render(); const m = $('lancMsg'); if(m) m.textContent = 'Última folha removida.'; }catch(e){ alert(e.message); }
+  }
+
   // ---------- exportar tudo ----------
   function exportarTudo(){
     if(!dados) return;
@@ -243,7 +309,7 @@ const Painel = (function(){
       <h2>Distribuição do progresso (alunos ativos)</h2><table><tr><th>Figurinhas coladas</th><th>Alunos</th></tr>
       <tr><td>0 a 9</td><td>${faixa(0, 9)}</td></tr><tr><td>10 a 19</td><td>${faixa(10, 19)}</td></tr><tr><td>20 a 35</td><td>${faixa(20, 35)}</td></tr><tr><td>36 (completo)</td><td>${faixa(36, 36)}</td></tr></table>
       <h2>Resultados das pesquisas (antes e depois)</h2>
-      <p>As pesquisas inicial e final são aplicadas em papel, de forma anônima, e tabuladas na planilha do projeto. Anexe aqui o resumo da escola (aba "Resumo", filtrando pela escola).</p>
+      <p>Pesquisas em papel, anônimas, lançadas no painel.</p>${tabelaPesquisas(e.turmas.map(t => t.id), 'tab')}
       <p class="nota">Privacidade: o sistema não guarda nomes de alunos. Os alunos são identificados apenas por códigos aleatórios; a correspondência com os nomes fica com a escola. O progresso no álbum é um indicador de engajamento, não uma avaliação.</p>`;
     janela('Relatório ' + e.nome, corpo);
   }
@@ -276,5 +342,5 @@ const Painel = (function(){
     if(sessao) carregar(); else mostrar('login');
   }
 
-  return { exportarTudo, relatorio, certificados, entrar, sair, abrirSenha, trocarSenha, carregar, mostrar, criarEscola, criarTurma, criarLogin, addAluno, liberar, excluirTurma, cartoes, csv, nome: salvarNome };
+  return { abrirLancamento, tipoLanc: trocarTipo, digitarLanc, desfazerLanc, exportarTudo, relatorio, certificados, entrar, sair, abrirSenha, trocarSenha, carregar, mostrar, criarEscola, criarTurma, criarLogin, addAluno, liberar, excluirTurma, cartoes, csv, nome: salvarNome };
 })();

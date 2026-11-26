@@ -39,6 +39,10 @@ button:hover{filter:brightness(1.15)}button:disabled{opacity:.5;cursor:default}
 .p-ok{background:rgba(34,197,94,.18);color:#86efac}.p-nao{background:rgba(148,163,255,.14);color:var(--txt2)}.p-alerta{background:rgba(245,158,11,.2);color:#fcd34d}
 .nome-local{width:100%;max-width:200px;padding:6px 9px;border-radius:8px;font-size:.88rem}
 .oculto{display:none!important}
+.lnk{background:#24305e;color:#fff;border-radius:9px;padding:8px 12px;text-decoration:none;font-weight:700;font-size:.85rem}
+.lanc{margin-top:12px;background:#111a3a;border:1px dashed rgba(250,204,21,.45);border-radius:14px;padding:14px}
+.lanc label{margin-right:12px}
+.lanc-campo{font-family:ui-monospace,Consolas,monospace;font-size:1.6rem;letter-spacing:.35em;width:100%;max-width:520px;margin:6px 0}
 .tabwrap{overflow-x:auto}
 details>summary{cursor:pointer;font-weight:700;color:#c7d2fe;margin:6px 0}
 .aviso{background:rgba(250,204,21,.08);border:1px dashed rgba(250,204,21,.45);border-radius:12px;padding:10px 12px;color:#fde68a;font-size:.88rem}
@@ -82,6 +86,16 @@ details>summary{cursor:pointer;font-weight:700;color:#c7d2fe;margin:6px 0}
       <div id="resumoEscolas"></div>
       <p class="aviso">🔒 Nenhum nome de aluno é guardado no servidor. A coluna "Nome" fica salva só neste navegador, para você se organizar. Os alunos são identificados pelo código do cartão.</p>
     </section>
+    <section class="card">
+      <h2>📋 Pesquisas em papel (antes e depois)</h2>
+      <p class="muted peq">Anônimas, só para marcar X. A inicial é aplicada no 1º encontro e a final no 3º. Depois, lance as folhas em cada turma, no botão “📝 Lançar pesquisas”.</p>
+      <div class="linha">
+        <a class="mini lnk" href="pesquisas/pesquisas-inicial-e-final.pdf" target="_blank">🖨 Pesquisas inicial e final (PDF)</a>
+        <a class="mini lnk" href="pesquisas/etiquetas-envelope.pdf" target="_blank">✉ Etiquetas de envelope</a>
+        <a class="mini lnk" href="pesquisas/lista-conferencia-turma.pdf" target="_blank">📄 Lista de conferência da turma</a>
+      </div>
+      <details><summary>📊 Resultado geral das pesquisas</summary><div id="resultadoGeral"></div></details>
+    </section>
     <section id="areaSecretaria" class="card oculto">
       <h2>Cadastrar escola</h2>
       <div class="linha"><input id="novaEscola" placeholder="Nome da escola" style="flex:1;min-width:220px"><button class="pri" onclick="Painel.criarEscola()">Cadastrar</button></div>
@@ -92,6 +106,6 @@ details>summary{cursor:pointer;font-weight:700;color:#c7d2fe;margin:6px 0}
 </div>
 <script src="qrcode-lib.js"></script>
 <script src="painel-config.js?v=22"></script>
-<script src="painel-app.js?v=23"></script>
+<script src="painel-app.js?v=24"></script>
 </body>
 </html>
