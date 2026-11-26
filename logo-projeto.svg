@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="fundo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1e1b4b"/>
+      <stop offset="1" stop-color="#0a0f1f"/>
+    </linearGradient>
+    <linearGradient id="escudo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#a855f7"/>
+    </linearGradient>
+    <linearGradient id="coracao" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fdba74"/>
+      <stop offset=".55" stop-color="#f97316"/>
+      <stop offset="1" stop-color="#e11d48"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#fundo)"/>
+  <!-- escudo -->
+  <path d="M256 60 L420 118 V246 C420 350 350 420 256 456 C162 420 92 350 92 246 V118 Z" fill="url(#escudo)"/>
+  <path d="M256 92 L392 140 V246 C392 332 334 392 256 424 C178 392 120 332 120 246 V140 Z" fill="#0f1433" opacity=".35"/>
+  <!-- coração -->
+  <path d="M256 376 C206 338 158 300 158 246 C158 214 182 190 212 190 C232 190 248 201 256 218 C264 201 280 190 300 190 C330 190 354 214 354 246 C354 300 306 338 256 376 Z" fill="url(#coracao)"/>
+  <!-- duas mãos/brilho: traço de proteção -->
+  <path d="M206 262 L242 296 L310 228" fill="none" stroke="#fff" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- brilho -->
+  <path d="M378 86 l9 22 22 9 -22 9 -9 22 -9 -22 -22 -9 22 -9 z" fill="#fde68a"/>
+</svg>

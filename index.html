@@ -6,6 +6,11 @@
   <title>Álbum Combate ao Bullying e ao Cyberbullying</title>
   <meta name="description" content="Álbum digital pedagógico sobre bullying, cyberbullying, empatia e cultura de paz na escola.">
   <meta name="theme-color" content="#0a0f1f">
+  <link rel="icon" type="image/svg+xml" href="logo-projeto.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="logo-projeto-192.png">
+  <link rel="apple-touch-icon" href="logo-projeto-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0a0f1f">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="layout-cb.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,14 +34,15 @@
       <span class="cb-chip"><b id="navStatusRepetidas">0</b> repetidas</span>
     </div>
     <div class="cb-principal">
-      <button onclick="abrirTela('album')"><span class="cb-ico">📖</span><span>Álbum</span></button>
-      <button class="cb-destaque" onclick="abrirPacote()"><span class="cb-ico">🎁</span><span class="cb-lbl-longo">Abrir pacote</span><span class="cb-lbl-curto">Pacote</span></button>
-      <button onclick="abrirTela('simulados')"><span class="cb-ico">📝</span><span>Simulados</span></button>
+      <button data-nav="album" onclick="abrirTela('album')"><span class="cb-ico">📖</span><span>Álbum</span></button>
+      <button data-nav="pacote" onclick="abrirPacote()"><span class="cb-ico">🎁</span><span class="cb-lbl-longo">Abrir pacote</span><span class="cb-lbl-curto">Pacote</span></button>
+      <button data-nav="simulados" onclick="abrirTela('simulados')"><span class="cb-ico">📝</span><span>Simulados</span></button>
       <button onclick="window.location.href='game/index.html'"><span class="cb-ico">🎮</span><span>Game</span></button>
       <button id="cbMaisBtn" aria-expanded="false" aria-controls="cbMenu" onclick="cbAlternarMenu()"><span class="cb-ico">☰</span><span>Mais</span></button>
     </div>
     <nav id="cbMenu" class="cb-menu" aria-label="Mais opções">
       <button onclick="abrirTela('projeto')">Sobre o projeto</button>
+      <button onclick="cbAbrirCriador()">👨‍🏫 Criador do projeto</button>
       <button id="cbAreaProf">👩‍🏫 Área do professor</button>
       <button id="cbProjetor">📽 Modo Projetor</button>
       <button id="btnSomAlbum" onclick="alternarSom()">🎵 Música e efeitos: OFF</button>
@@ -137,5 +143,6 @@ const SUPABASE_ANON_KEY = (window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.anon
 <script src="painel-config.js?v=22"></script>
 <script src="supabase-config.js"></script>
 <script src="script.js"></script>
+<script src="nav-cb.js?v=1"></script>
 </body>
 </html>

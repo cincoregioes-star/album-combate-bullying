@@ -314,3 +314,35 @@ html body:not(#cb) button.opcao{color:#e8ecf8!important;font-weight:600}
 /* ===== Botão "Finalizar" do tamanho certo ===== */
 html body:not(#cb) .btn-finalizar-quiz,
 html body:not(#cb) #tela-simulados .btn-finalizar-quiz{grid-column:1/-1!important;justify-self:center!important;align-self:start!important;width:auto!important;min-width:240px;max-width:360px;height:auto!important;min-height:0!important;padding:14px 28px!important;margin:10px auto 24px!important;font-size:1.05rem!important;border-radius:14px!important}
+
+/* ===== Botões do topo: neutros; o que está em uso fica luminoso e maior ===== */
+html body:not(#cb) header.cb-topo .cb-principal button,
+html body:not(#cb) header.cb-topo .cb-principal button.cb-destaque{background:rgba(255,255,255,.06)!important;color:#e8ecf8!important;border:1px solid rgba(148,163,255,.22)!important;box-shadow:none!important;transform:none;transition:transform .15s ease, box-shadow .2s ease, background .2s ease;position:relative}
+html body:not(#cb) header.cb-topo .cb-principal button:hover{background:rgba(255,255,255,.12)!important}
+html body:not(#cb) header.cb-topo .cb-principal button.cb-ativo{background:linear-gradient(135deg,#6366f1,#a855f7)!important;color:#fff!important;border-color:rgba(255,255,255,.55)!important;box-shadow:0 0 0 2px rgba(196,181,253,.55),0 0 22px rgba(139,92,246,.85)!important;transform:scale(1.08);z-index:2}
+html body:not(#cb) header.cb-topo .cb-principal button[data-nav="pacote"].cb-ativo{background:linear-gradient(135deg,#f97316,#f43f5e)!important;box-shadow:0 0 0 2px rgba(254,215,170,.6),0 0 22px rgba(249,115,22,.85)!important}
+html body:not(#cb) .cb-badge{position:absolute;top:-7px;right:-7px;min-width:21px;height:21px;padding:0 5px;border-radius:99px;background:#f43f5e;color:#fff;font-size:12px;font-weight:900;display:grid;place-items:center;box-shadow:0 0 0 2px #0a0f1f}
+html body:not(#cb) header.cb-topo .cb-principal button.cb-tem-pacote:not(.cb-ativo){border-color:rgba(249,115,22,.7)!important}
+
+/* ===== Voltar ao álbum ===== */
+html body:not(#cb) .cb-voltar-album{position:fixed;left:16px;bottom:16px;z-index:60;display:none;padding:12px 18px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;font:inherit;font-weight:800;box-shadow:0 10px 24px rgba(0,0,0,.4);cursor:pointer}
+html body:not(#cb) .cb-voltar-album.cb-visivel{display:block}
+html body:not(#cb) .ficha-voltar{background:linear-gradient(135deg,#4f46e5,#7c3aed)!important;color:#fff!important;margin-top:8px}
+
+/* ===== Um "X" só na janela da figurinha ===== */
+html body:not(#cb) #modal:has(.ficha-fechar-x) .fechar{display:none!important}
+
+/* ===== Prêmio dos simulados ===== */
+html body:not(#cb) .premio-status{display:inline-block;margin:0 0 10px;padding:5px 12px;border-radius:99px;font-weight:800;font-size:.85rem}
+html body:not(#cb) .premio-status.novo{background:rgba(249,115,22,.18);color:#fdba74}
+html body:not(#cb) .premio-status.meio{background:rgba(250,204,21,.16);color:#fde68a}
+html body:not(#cb) .premio-status.ok{background:rgba(34,197,94,.16);color:#86efac}
+
+/* ===== Área do criador ===== */
+html body:not(#cb) .cb-criador{max-width:560px;margin:auto;text-align:left;line-height:1.5}
+html body:not(#cb) .cb-criador-topo{display:flex;gap:14px;align-items:center;margin-bottom:12px}
+html body:not(#cb) .cb-criador-topo img{width:72px;height:72px}
+html body:not(#cb) .cb-criador-topo span{color:#fdba74;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:.06em}
+html body:not(#cb) .cb-criador-topo h2{margin:2px 0 0;font-size:1.35rem}
+html body:not(#cb) .cb-criador ul{list-style:none;padding:0;margin:10px 0}
+html body:not(#cb) .cb-criador-rodape{font-size:.8rem;opacity:.75}

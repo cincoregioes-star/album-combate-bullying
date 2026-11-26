@@ -355,7 +355,7 @@ function abrirFicha(num){
         <h2>Ficha bloqueada</h2>
         <p>Primeiro ganhe a figurinha, cole no álbum e depois volte aqui para visualizar a ficha técnica completa.</p>
         <div class="ficha-acoes">
-          <button class="ficha-fechar-btn" onclick="fecharModal()">Fechar</button>
+          <button class="ficha-fechar-btn" onclick="fecharModal()">Fechar</button><button class="ficha-fechar-btn ficha-voltar" onclick="fecharModal();abrirTela('album')">← Voltar ao álbum</button>
         </div>
       </div>
     </div>`);
@@ -382,7 +382,7 @@ function abrirFicha(num){
         <p><strong>Pense e converse:</strong> ${f.reflexao || ""}</p>
         <div class="ficha-destaque">Bullying não é brincadeira. Respeito, empatia e cidadania digital transformam a escola num lugar seguro para todos.</div>
         <div class="ficha-acoes">
-          <button class="ficha-fechar-btn" onclick="fecharModal()">Fechar</button>
+          <button class="ficha-fechar-btn" onclick="fecharModal()">Fechar</button><button class="ficha-fechar-btn ficha-voltar" onclick="fecharModal();abrirTela('album')">← Voltar ao álbum</button>
         </div>
       </div>
       <div class="ficha-midia">
@@ -400,6 +400,12 @@ const SIMULADOS_TEMA = (window.CB_SIMULADOS || []).map(s=>({titulo:s.titulo, per
 let simuladoAtual = null;
 let respostasSimuladoAtual = {};
 
+function premioSimuladoTexto(titulo){
+  const p = (estado.premiosSimulado || {})[titulo] || {};
+  if(p.pacote) return '<p class="premio-status ok">✅ Pacote já recebido · agora é treino</p>';
+  if(p.figurinha) return '<p class="premio-status meio">⭐ Figurinha já recebida · acerte 10/10 para ganhar o pacote</p>';
+  return '<p class="premio-status novo">🎁 Prêmio disponível</p>';
+}
 function renderSimulados(){
   respostasSimuladoAtual = {};
   simuladoAtual = null;
@@ -407,7 +413,8 @@ function renderSimulados(){
   area.innerHTML = SIMULADOS_TEMA.map((s,i)=>`
     <div class="quiz-card quiz-card-unico">
       <h3>${s.titulo}</h3>
-      <p>10 questões. Acertou as 10: ganha <b>1 pacote</b>. Errou qualquer uma: ganha <b>1 figurinha</b>.</p>
+      <p>10 questões. Acertou as 10: ganha <b>1 pacote</b> (uma vez). Errou alguma: ganha <b>1 figurinha</b> (uma vez). Depois, vale como treino.</p>
+      ${premioSimuladoTexto(s.titulo)}
       <button class="btn" onclick="iniciarSimuladoTema(${i})">Responder</button>
     </div>
   `).join("");
@@ -454,8 +461,26 @@ function finalizarSimuladoTema(){
   simuladoAtual.perguntas.forEach((q,i)=>{ if(respostasSimuladoAtual[i] === q[2]) acertos++; });
 
   estado.historico = estado.historico || [];
+  estado.premiosSimulado = estado.premiosSimulado || {};
+  const chavePremio = simuladoAtual.titulo;
+  const premios = estado.premiosSimulado[chavePremio] = estado.premiosSimulado[chavePremio] || {};
+  const jaGanhouPacote = !!premios.pacote, jaGanhouFigurinha = !!premios.figurinha;
+
+  if((acertos === 10 && jaGanhouPacote) || (acertos < 10 && jaGanhouFigurinha)){
+    estado.historico.push({tipo:"simulado", titulo:simuladoAtual.titulo, acertos, premio:"treino", data:new Date().toISOString()});
+    salvar();
+    document.getElementById("simuladosArea").innerHTML = `<div class="quiz-card quiz-card-unico">
+      <h3>Resultado: ${acertos}/10</h3>
+      <p>Bom treino! Você já recebeu ${acertos === 10 ? "o pacote" : "a figurinha"} deste simulado, então esta tentativa não vale prêmio.</p>
+      <p>${acertos < 10 && !jaGanhouPacote ? "Acerte as 10 questões para ganhar o pacote deste simulado." : "Responda outro simulado ou jogue o game para ganhar mais figurinhas."}</p>
+      <button class="btn" onclick="renderSimulados()">Ver outros simulados</button>
+      <button class="btn" onclick="abrirTela('album')">← Voltar ao álbum</button>
+    </div>`;
+    return;
+  }
 
   if(acertos === 10){
+    premios.pacote = true;
     estado.pacotes = Number(estado.pacotes || 0) + 1;
     estado.historico.push({tipo:"simulado", titulo:simuladoAtual.titulo, acertos, premio:"1 pacote", data:new Date().toISOString()});
     salvar();
@@ -467,6 +492,7 @@ function finalizarSimuladoTema(){
       <button class="btn" onclick="renderSimulados()">Voltar aos simulados</button>
     </div>`;
   }else{
+    premios.figurinha = true;
     const n = liberarFigurinha("simulado");
     const f = FIGURINHAS.find(x => x.numero === n);
     estado.historico.push({tipo:"simulado", titulo:simuladoAtual.titulo, acertos, premio:"1 figurinha", numero:n, data:new Date().toISOString()});
