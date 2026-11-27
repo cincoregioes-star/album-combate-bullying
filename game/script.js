@@ -1123,19 +1123,27 @@ function checkWin() {
     markInteraction();
     play(audioVitoria, 0.9);
     revelarFigurinhaInteira();
-    const ganhou = enviarFigurinhaParaAlbum(currentStickerNumber, `Game — fase ${phaseIndex + 1}`);
+    // Cada fase dá a figurinha uma única vez; depois, a fase vale como treino.
+    let premiadas = []; try { premiadas = JSON.parse(localStorage.getItem("cb_game_fases_premiadas") || "[]"); } catch (e) {}
+    let ganhou;
+    if (premiadas.includes(phaseIndex)) {
+      ganhou = { numero: currentStickerNumber, treino: true };
+    } else {
+      ganhou = enviarFigurinhaParaAlbum(currentStickerNumber, `Game — fase ${phaseIndex + 1}`);
+      premiadas.push(phaseIndex); localStorage.setItem("cb_game_fases_premiadas", JSON.stringify(premiadas));
+    }
     setTimeout(() => mostrarFigurinhaRevelada(currentStickerNumber, ganhou, phaseIndex >= PHASES.length - 1), 450);
 
     if (phaseIndex >= PHASES.length - 1) {
       openModal(
         "Missão concluída!",
-        `Você concluiu todas as fases e revelou a figurinha ${String(currentStickerNumber).padStart(2, "0")}. Ela já está no seu álbum.`,
+        `Você concluiu todas as fases e revelou a figurinha ${String(currentStickerNumber).padStart(2, "0")}.`,
         { primaryText: "Reiniciar jogo", primaryAction: () => { closeModal(); resetGame(); } }
       );
     } else {
       openModal(
         "Fase vencida!",
-        `Você revelou a figurinha ${String(currentStickerNumber).padStart(2, "0")}. Ela já foi enviada para o seu álbum.`,
+        `Você revelou a figurinha ${String(currentStickerNumber).padStart(2, "0")}.`,
         { primaryText: "Próxima fase", primaryAction: () => { closeModal(); nextPhase(); } }
       );
     }
@@ -1370,14 +1378,14 @@ function mostrarFigurinhaRevelada(n, info, ultimaFase) {
   }
   const fechar = "document.getElementById('premioAlbumMunicipal').remove()";
   const botaoContinuar = ultimaFase
-    ? `<button onclick="${fechar}">Ver painel de direitos</button>`
+    ? `<button onclick="${fechar}; closeModal(); resetGame();">Jogar de novo</button>`
     : `<button onclick="${fechar}; closeModal(); nextPhase();">Próxima fase</button>`;
   box.innerHTML = `
     <div class="premio-album-box revelacao">
       <h2>Figurinha revelada!</h2>
       <div class="revelacao-carta"><img src="${caminhoFigurinhaAlbum(n)}" alt="Figurinha ${n2}"></div>
       <p><b>${n2}${titulo ? " — " + titulo : ""}</b></p>
-      <p>${info && info.repetida ? "Você já tinha esta figurinha: ela entrou como <b>repetida</b>." : "Ela já foi enviada para o seu álbum. Volte e clique em <b>Colar figurinha</b>."}</p>
+      <p>${info && info.treino ? "Você já ganhou a figurinha desta fase. Esta partida foi um <b>treino</b>." : info && info.repetida ? "Você já tinha esta figurinha: ela entrou como <b>repetida</b>." : "Ela já foi enviada para o seu álbum. Volte e clique em <b>Colar figurinha</b>."}</p>
       <div class="revelacao-botoes">
         ${botaoContinuar}
         <button class="secundario" onclick="window.location.href='../index.html'">Voltar ao álbum</button>

@@ -528,7 +528,9 @@ function iniciarDesafio(){
     pos++;
     if(pos<perguntas.length) tela();
     else{
-      if(acertos===10){
+      if(acertos===10 && estado.desafioFeito){
+        modal(`<h2>Desafio vencido de novo!</h2><p>Você acertou 10/10. O prêmio do Desafio Final é dado uma única vez, e você já recebeu as 10 figurinhas. Esta foi uma rodada de treino.</p><button class="btn" onclick="fecharModal();abrirTela('album')">← Voltar ao álbum</button>`);
+      }else if(acertos===10){
         for(let i=0;i<10;i++) liberarFigurinha("desafio-final");
         estado.desafioFeito=true;
         salvar();
